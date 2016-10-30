@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public abstract class IGraph {
 	
@@ -33,10 +32,10 @@ public abstract class IGraph {
 	public abstract boolean isArc(int src, int dst);
 	public abstract boolean isVertex(int vertex);
 	
-	public abstract LinkedList<Arc> delta_out(int vertex);
-	public abstract LinkedList<Arc> delta_in(int vertex);
-	public abstract LinkedList<Integer> neighbours_out(int vertex);
-	public abstract LinkedList<Integer> neighbours_in(int vertex);
+	public abstract ArrayList<Arc> delta_out(int vertex);
+	public abstract ArrayList<Arc> delta_in(int vertex);
+	public abstract ArrayList<Integer> neighbours_out(int vertex);
+	public abstract ArrayList<Integer> neighbours_in(int vertex);
 	
 	public abstract ArrayList<Integer> getVertices();
 	
