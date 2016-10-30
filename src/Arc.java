@@ -13,4 +13,8 @@ public class Arc {
 		dst = -1;
 	}
 	
+	public String toString() {
+		return "(" + src + "," + dst + ")";
+	}
+
 }
