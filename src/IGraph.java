@@ -2,20 +2,6 @@ import java.util.ArrayList;
 
 public abstract class IGraph {
 	
-	ArrayList<String> verticesValue;
-	
-	public String toString() {
-		String res = "";
-		for(Integer vertex : getVertices()) {
-			res += verticesValue.get(vertex) + " :";
-			for(Arc arc : delta_out(vertex)) {
-				res += " " + verticesValue.get(arc.dst);
-			}
-			res += "\n";
-		}
-		return res;
-	}
-	
 	public abstract void addArc(int src, int dst);
 	public void addEdge (int src, int dst) {
 		addArc(src, dst);
@@ -38,5 +24,15 @@ public abstract class IGraph {
 	public abstract ArrayList<Integer> neighbours_in(int vertex);
 	
 	public abstract ArrayList<Integer> getVertices();
+	
+	public String toString() {
+		String res = "";
+		
+		for (int vertex : getVertices()) {
+			res += "[" + vertex + "] : " + delta_out(vertex) + "\n";
+		}
+		
+		return res;
+	}
 	
 }
