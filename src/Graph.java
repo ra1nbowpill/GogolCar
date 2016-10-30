@@ -5,6 +5,7 @@ import java.util.LinkedList;
 public class Graph{
 	ArrayList<LinkedList<Integer>> adjacency =new ArrayList<>();
 	HashMap<Integer, LinkedList<Integer>> vertices = new HashMap<>();
+
 	public void add(int vertex){
 		LinkedList<Integer> var=new LinkedList<Integer>();
 		adjacency.add(var);
@@ -38,14 +39,5 @@ public class Graph{
 		path.add(firstVertex);
 		return path;
 	}
-	
-	public static void main(String args[]){
-		Graph G=new Graph();
-		G.add(1, 2);
-		G.add(1, 5);
-		G.add(2, 3);
-		G.add(2, 4);
-		G.add(3, 5);
-		System.out.println(G.naiveGogolS(1));
-	}
+
 }
