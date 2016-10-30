@@ -29,7 +29,9 @@ public abstract class IGraph {
 		removeArc(src, dst);
 		removeArc(dst, src);
 	}
-	public abstract void removeVertex(int src, int dst);
+	public abstract void removeVertex(int vertex);
+	public abstract boolean isArc(int src, int dst);
+	public abstract boolean isVertex(int vertex);
 	
 	public abstract LinkedList<Arc> delta_out(int vertex);
 	public abstract LinkedList<Arc> delta_in(int vertex);
