@@ -1,12 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Ville {
 
-	private ArrayList<Road> roads =new ArrayList<>();
+	private ArrayList<Road> roads = new ArrayList<>();
 	private ArrayList<String> places = new ArrayList<>();
+	
 	
 	public void addPlace(String place) {
 		places.add(place);
@@ -30,6 +32,67 @@ public class Ville {
 	public ArrayList<Road> getRoads() {return roads;}
 	public ArrayList<String> getPlaces() {return places;}
 	
+	public Arc toArc(Road road) {
+		return new Arc(
+				getPlaces().indexOf(road.getPlaceSrc()),
+				getPlaces().indexOf(road.getPlaceDst()));
+	}
+	
+	public ArrayList<Arc> toArcs() {
+		ArrayList<Arc> arcs = new ArrayList<>();;
+		for(Road road : getRoads()) {
+			arcs.add(toArc(road));
+			
+		}
+		return arcs;
+	}
+	
+	public int toVertex(String place) {
+		return getPlaces().indexOf(place);
+	}
+	
+	public ArrayList<Integer> toVertices() {
+		ArrayList<Integer> vertices = new ArrayList<>();
+		for(String place : getPlaces()) {
+			vertices.add(toVertex(place));
+		}
+		return vertices;
+	}
+	
+	public Road toRoad(Arc arc) {
+		String placeSrc = getPlaces().get(arc.src),
+				placeDst = getPlaces().get(arc.dst);
+		
+		for (Road road : getRoads()) {
+			if (road.getPlaceSrc().equals(placeSrc) &&
+					road.getPlaceDst().equals(placeDst)) {
+				return road;
+			}
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<Road> toRoads(ArrayList<Arc> arcs) {
+		ArrayList<Road> roads = new ArrayList<>();
+		for(Arc arc : arcs) {
+			roads.add(toRoad(arc));
+		}
+		return roads;
+	}
+	
+	public String toPlace(int vertex) {
+		return getPlaces().get(vertex);
+	}
+	
+	public ArrayList<String> toPlaces(ArrayList<Integer> vertices) {
+		ArrayList<String> places = new ArrayList<>();
+		for(int vertex : vertices) {
+			places.add(toPlace(vertex));
+		}
+		return places;
+	}
+	
 	public String toString() {
 		String res = "";
 		res += places.size() + ".\n" + roads.size() + ".\n";
@@ -41,7 +104,7 @@ public class Ville {
 		}
 		return res;
 	}
-		
+			
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville();
 		Integer nbPlaces = -1, nbRoads = -1;

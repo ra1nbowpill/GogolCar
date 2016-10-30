@@ -17,21 +17,6 @@ public abstract class IGraph {
 		return res;
 	}
 	
-	/* ??
-	 * 
-	 * public void fromCity(Ville city) {
-		int i = 0;
-		for(String elt : city.getPlaces()) {
-			verticesValue.add(elt);
-			addVertex(verticesValue.indexOf(elt));
-		}
-		for(Road elt : city.getRoads()) {
-			addEdge(verticesValue.indexOf(elt.getPlaceSrc()),
-					verticesValue.indexOf(elt.getPlaceDst()));
-		}
-	}*/
-	
-	
 	public abstract void addArc(int src, int dst);
 	public void addEdge (int src, int dst) {
 		addArc(src, dst);
