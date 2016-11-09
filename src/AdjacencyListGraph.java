@@ -20,20 +20,22 @@ public class AdjacencyListGraph extends IGraph{
 	}
 	
 	@Override
-	public void addArc(Arc A) {
-		int srcIndex = corresp.indexOf(A.src()),
-				dstIndex = corresp.indexOf(A.dst());
+	public void addArc(Arc arc) {
+		int srcIndex = corresp.indexOf(arc.src()),
+				dstIndex = corresp.indexOf(arc.dst());
 		
 		if (srcIndex == -1) {
-			addVertex(A.src());
+			addVertex(arc.src());
+			srcIndex = corresp.indexOf(arc.src());
 		}
 		if (dstIndex == -1) {
-			addVertex(A.dst());
+			addVertex(arc.dst());
+			dstIndex = corresp.indexOf(arc.dst());
 		}
 		
 		LinkedList<Integer> srcList = adjacencyList.get(srcIndex);
-		if (srcList.contains(A.dst())) {return ;}
-		srcList.add(A.dst());
+		if (srcList.contains(arc.dst())) {return ;}
+		srcList.add(arc.dst());
 	}
 
 	@Override
@@ -117,5 +119,4 @@ public class AdjacencyListGraph extends IGraph{
 		return corresp.contains(vertex);
 	}
 
-	
 }
