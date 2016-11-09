@@ -20,22 +20,20 @@ public class AdjacencyListGraph extends IGraph{
 	}
 	
 	@Override
-	public void addArc(int src, int dst) {
-		int srcIndex = corresp.indexOf(src),
-				dstIndex = corresp.indexOf(dst);
+	public void addArc(Arc A) {
+		int srcIndex = corresp.indexOf(A.src()),
+				dstIndex = corresp.indexOf(A.dst());
 		
 		if (srcIndex == -1) {
-			addVertex(src);
-			srcIndex = corresp.indexOf(src);
+			addVertex(A.src());
 		}
 		if (dstIndex == -1) {
-			addVertex(dst);
-			dstIndex = corresp.indexOf(dst);
+			addVertex(A.dst());
 		}
 		
 		LinkedList<Integer> srcList = adjacencyList.get(srcIndex);
-		if (srcList.contains(dst)) {return ;}
-		srcList.add(dst);
+		if (srcList.contains(A.dst())) {return ;}
+		srcList.add(A.dst());
 	}
 
 	@Override
@@ -47,12 +45,12 @@ public class AdjacencyListGraph extends IGraph{
 	}
 
 	@Override
-	public void removeArc(int src, int dst) {
-		int srcIndex = corresp.indexOf(src);
+	public void removeArc(Arc A) {
+		int srcIndex = corresp.indexOf(A.src());		
 		if (srcIndex == -1) {
 			return ;
 		}
-		adjacencyList.get(srcIndex).remove((Object) dst);
+		adjacencyList.get(srcIndex).remove(A.dst());
 	}
 
 	@Override
@@ -108,15 +106,16 @@ public class AdjacencyListGraph extends IGraph{
 	}
 
 	@Override
-	public boolean isArc(int src, int dst) {
-		int srcIndex = corresp.indexOf(src);
+	public boolean isArc(Arc A) {
+		int srcIndex = corresp.indexOf(A.src());
 		if (srcIndex == -1) {return false;}
-		return adjacencyList.get(srcIndex).contains(dst);
+		return adjacencyList.get(srcIndex).contains(A.dst());
 	}
 
 	@Override
 	public boolean isVertex(int vertex) {
 		return corresp.contains(vertex);
 	}
+
 	
 }

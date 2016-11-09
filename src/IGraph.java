@@ -1,27 +1,22 @@
 import java.util.ArrayList;
 
 public abstract class IGraph {
-	
-	public abstract void addArc(int src, int dst);
-	public void addArc(Arc arc) {
-		addArc(arc.src, arc.dst);
-	}
-	public void addEdge (int src, int dst) {
-		addArc(src, dst);
-		addArc(dst, src);
+
+	public abstract void addArc(Arc A);
+	public void addEdge (Arc A) {
+		addArc(A);
+		addArc(new Arc(A.dst(), A.src()));
 	}
 	public abstract void addVertex(int vertex);
+
+	public abstract void removeArc(Arc arc);
+	public void removeEdge(Arc arc) {
+		removeArc(arc);
+		removeArc(new Arc(arc.dst(), arc.src()));
+	}
 	
-	public abstract void removeArc(int src, int dst);
-	public void removeArc(Arc arc) {
-		removeArc(arc.src, arc.dst);
-	}
-	public void removeEdge(int src, int dst) {
-		removeArc(src, dst);
-		removeArc(dst, src);
-	}
 	public abstract void removeVertex(int vertex);
-	public abstract boolean isArc(int src, int dst);
+	public abstract boolean isArc(Arc A);
 	public abstract boolean isVertex(int vertex);
 	
 	public abstract ArrayList<Arc> delta_out(int vertex);
