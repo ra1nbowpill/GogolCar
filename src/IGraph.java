@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 public abstract class IGraph {
+	
+	int V=0;
+	int A=0;
 
 	public abstract void addArc(Arc A);
 	public void addEdge (Arc A) {
@@ -23,8 +26,13 @@ public abstract class IGraph {
 	public abstract ArrayList<Arc> delta_in(int vertex);
 	public abstract ArrayList<Integer> neighbours_out(int vertex);
 	public abstract ArrayList<Integer> neighbours_in(int vertex);
-	
 	public abstract ArrayList<Integer> getVertices();
+	public int V(){
+		return V;
+	}
+	public int A(){
+		return A;
+	}
 	
 	public String toString() {
 		String res = "delta_out\n";
