@@ -1,9 +1,9 @@
 import java.util.Stack;
 
-public class depthFirstSearch {
+public class DepthFirstSearch {
 	 private boolean[] marked; 
 	 private int count;   
-	 public depthFirstSearch(IGraph G, Integer s, Stack<Integer> S) {
+	 public DepthFirstSearch(IGraph G, Integer s, Stack<Integer> S) {
 	        marked = new boolean[G.V()];
 	        S.push(s);
 	        dfs(G, s, S);
