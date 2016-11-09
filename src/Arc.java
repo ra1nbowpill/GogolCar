@@ -13,11 +13,11 @@ public class Arc {
 		dst = -1;
 	}
 	
-	public int Src(){
+	public int src(){
 		return this.src;
 	}
 	
-	public int Dst(){
+	public int dst(){
 		return this.dst;
 	}
 	

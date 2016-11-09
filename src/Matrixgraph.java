@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Matrixgraph extends IGraph{
 	
@@ -17,9 +18,9 @@ public class Matrixgraph extends IGraph{
 	@Override
 	public void addArc(Arc A) {
 		// TODO Auto-generated method stub
-		if (!graphMatrix[A.Src()][A.Dst()]) E++;
-		graphMatrix[A.Src()][A.Dst()] = true;
-		graphMatrix[A.Src()][A.Src()] = true;
+		if (!graphMatrix[A.src()][A.dst()]) E++;
+		graphMatrix[A.src()][A.dst()] = true;
+		graphMatrix[A.dst()][A.src()] = true;
 	}	
 
 	@Override
@@ -31,9 +32,9 @@ public class Matrixgraph extends IGraph{
 	@Override
 	public void removeArc(Arc A) {
 		// TODO Auto-generated method stub
-		if (graphMatrix[A.Src()][A.Dst()]) E--;
-		graphMatrix[A.Src()][A.Dst()] = false;
-		graphMatrix[A.Dst()][A.Src()] = false;
+		if (graphMatrix[A.src()][A.dst()]) E--;
+		graphMatrix[A.src()][A.dst()] = false;
+		graphMatrix[A.dst()][A.src()] = false;
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class Matrixgraph extends IGraph{
 	@Override
 	public boolean isArc(Arc A) {
 		// TODO Auto-generated method stub
-		return graphMatrix[A.Src()][A.Dst()];
+		return graphMatrix[A.src()][A.dst()];
 	}
 
 	@Override
@@ -81,6 +82,18 @@ public class Matrixgraph extends IGraph{
 	public ArrayList<Integer> getVertices() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int V() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int A() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

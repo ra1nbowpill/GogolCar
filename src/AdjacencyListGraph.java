@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -11,19 +12,23 @@ public class AdjacencyListGraph extends IGraph{
 	
 	@Override
 	public void addArc(Arc A) {
-		int srcIndex = corresp.indexOf(A.Src()),
-				dstIndex = corresp.indexOf(A.Dst());
+		int srcIndex = corresp.indexOf(A.src()),
+				dstIndex = corresp.indexOf(A.dst());
 		
 		if (srcIndex == -1) {
-			addVertex(A.Src());
+			addVertex(A.src());
+			srcIndex = corresp.indexOf(A.src());
 		}
 		if (dstIndex == -1) {
-			addVertex(A.Dst());
+			addVertex(A.dst());
+			dstIndex = corresp.indexOf(A.dst());
 		}
 		
-		LinkedList<Integer> srcList = adjacencyList.get(srcIndex);
-		if (srcList.contains(A.Dst())) {return ;}
-		srcList.add(A.Dst());
+		LinkedList<Integer> srcList;
+		srcList= adjacencyList.get(srcIndex);
+		if (srcList.contains(A.dst())) {return ;}
+		srcList.add(A.dst());
+		this.A++;
 
 	}
 
@@ -33,15 +38,17 @@ public class AdjacencyListGraph extends IGraph{
 		
 		adjacencyList.add(new LinkedList<>());
 		corresp.add(vertex);
+		this.V++;
 	}
 
 	@Override
 	public void removeArc(Arc A) {
-		int srcIndex = corresp.indexOf(A.Src());		
+		int srcIndex = corresp.indexOf(A.src());		
 		if (srcIndex == -1) {
 			return ;
 		}
-		adjacencyList.get(srcIndex).remove(A.Dst());
+		adjacencyList.get(srcIndex).remove(A.dst());
+		this.A--;
 	}
 
 	@Override
@@ -51,6 +58,7 @@ public class AdjacencyListGraph extends IGraph{
 			return ;
 		}
 		adjacencyList.remove(srcIndex);
+		this.V--;
 	}
 
 	@Override
@@ -101,9 +109,9 @@ public class AdjacencyListGraph extends IGraph{
 
 	@Override
 	public boolean isArc(Arc A) {
-		int srcIndex = corresp.indexOf(A.Src());
+		int srcIndex = corresp.indexOf(A.src());
 		if (srcIndex == -1) {return false;}
-		return adjacencyList.get(srcIndex).contains(A.Dst());
+		return adjacencyList.get(srcIndex).contains(A.dst());
 	}
 
 	@Override
@@ -111,5 +119,15 @@ public class AdjacencyListGraph extends IGraph{
 		return corresp.contains(vertex);
 	}
 
+
+	@Override
+	public int V() {
+		return V;
+	}
+
+	@Override
+	public int A() {
+		return A;
+	}
 	
 }
