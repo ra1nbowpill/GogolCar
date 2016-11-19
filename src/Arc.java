@@ -24,5 +24,9 @@ public class Arc {
 	public String toString() {
 		return "(" + src + "," + dst + ")";
 	}
+	
+	public Arc antiArc() {
+		return new Arc(dst, src);
+	}
 
 }
