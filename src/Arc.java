@@ -1,5 +1,5 @@
 
-public class Arc {
+public class Arc implements Comparable<Arc>{
 
 	int src, dst;
 	
@@ -27,6 +27,19 @@ public class Arc {
 	
 	public Arc antiArc() {
 		return new Arc(dst, src);
+	}
+
+	@Override
+	public int compareTo(Arc o) {
+		if (src != o.src) {
+			return src - o.src;
+		} else {
+			return dst - o.dst;
+		}
+	}
+	
+	public boolean equals(Arc o) {
+		return src == o.src() ? (dst == o.dst() ? true : false) : false;
 	}
 
 }
