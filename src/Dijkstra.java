@@ -70,7 +70,6 @@ public class Dijkstra {
 			if (vertAct == -1) {
 				break;
 			}
-			System.out.println(vertAct);
 		}
 		Collections.reverse(predecessor);
 		return predecessor;
