@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Dijkstra {
 
-	private boolean isOver(int[] res) {
+	private static boolean isOver(int[] res) {
 		for (int i = 0; i < res.length; i++) {
 			if (res[i] == Integer.MAX_VALUE) {
 				return false;
@@ -13,7 +13,7 @@ public class Dijkstra {
 		return true;
 	}
 	
-	private List<Integer> getCorresp(IGraph graph) {	
+	private static List<Integer> getCorresp(IGraph graph) {	
 		List<Integer> corresp = new ArrayList<>();
 		for (int vertex : graph.getVertices()) {
 			corresp.add(vertex);
@@ -21,7 +21,7 @@ public class Dijkstra {
 		return corresp;
 	}
 	
-	private int[][] dijkstra(IGraph graph, int src, List<Integer> corresp) {
+	private static int[][] dijkstra(IGraph graph, int src, List<Integer> corresp) {
 		
 		int[] res = new int[graph.getVertices().size()];
 		int[] pred = new int[graph.getVertices().size()];
@@ -54,7 +54,7 @@ public class Dijkstra {
 		return a;
 	}
 	
-	public List<Integer> dijkstra(IGraph graph, int src, int dst) {
+	public static List<Integer> dijkstra(IGraph graph, int src, int dst) {
 		if (!graph.isVertex(src) || !graph.isVertex(dst)) {
 			return null;
 		}
