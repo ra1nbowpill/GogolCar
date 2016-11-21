@@ -9,116 +9,77 @@ import java.util.TreeSet;
 
 public class GogolL {
 
-	/* 2 groupes de sommets, edge dans anti_arbo et dans graphe, edge pas dans anti_arbo et dans graphe, edge deja visité ??? */
 	public boolean DEBUG = false;
+	
 	private List<Integer> path = new ArrayList<>();
-	private IGraph graph;
-	
-	public GogolL(IGraph graph) {
-		this.graph = graph;
-	}
-	
-	private static List<Integer> getCorresp(IGraph graph) {	
-		List<Integer> corresp = new ArrayList<>();
-		for (int vertex : graph.getVertices()) {
-			corresp.add(vertex);
-		}
-		return corresp;
-	}
-	
-	public static <T> Queue<T> flip(Queue<T> q) {
-	    Queue<T> ret = new LinkedList<>();
-	    recursiveFlip(q, ret);
-	    return ret;
-	}
 
-	private static <T> void recursiveFlip(Queue<T> src, Queue<T> dest) {
-	    T buffer = src.poll();
-	    if(!src.isEmpty()) {
-	        recursiveFlip(src, dest);
-	    }
-	    dest.offer(buffer);
+	
+	GogolL() {}
+	GogolL(boolean DEBUG) {
+		this.DEBUG = DEBUG;
 	}
 	
+	/* Compute tree from graph */
 	Set<Integer> visited = new TreeSet<>();
-	private Set<Arc> getAntiArbo(IGraph graph, int root) {
+	
+	public Set<Arc> getAntiArbo(IGraph graph, int root) {
 		if (!graph.isVertex(root)) {return null;}
 		Set<Arc> arbo = new TreeSet<>();
 		visited.add(root);
 		for (Integer neighbour : graph.neighbours_out(root)) {
 			if (!visited.contains(neighbour)) {
-				arbo.add(new Arc(root, neighbour));
+				arbo.add(new Arc(root, neighbour).antiArc());
 				arbo.addAll(getAntiArbo(graph, neighbour));
 			}
 		}
 		return arbo;
 	}
 	
-	private Map<Integer, LinkedList<Arc>> numberize(IGraph graph, Set<Arc> antiArbo, int root) {
-		Map<Integer, LinkedList<Arc>> res = new HashMap<>();
+	/* Define visiting order of arcs */
+	private Map<Integer, Queue<Arc>> numberize(IGraph graph, Set<Arc> antiArbo, int root) {
+		
+		Map<Integer, Queue<Arc>> res = new HashMap<>();
 		
 		for (Integer vertex : graph.getVertices()) {
-			Set<Arc> a = new TreeSet<>(graph.delta_out(vertex));
-			a.retainAll(antiArbo);
-			for (Arc arc : a) {
-				if (res.get(vertex) == null) {
-					res.put(vertex, new LinkedList<>());
-				}
-				res.get(vertex).add(arc);
-			}
-			Set<Arc> b = new TreeSet<>(graph.delta_out(vertex));
-			b.removeAll(a);
-			Set<Arc> ret = new TreeSet<>();
-			for (Arc arc : b) {
-
+			res.put(vertex, new LinkedList<>());
+			
+			/* Initializing types of arcs to visit */
+			Set<Arc> arcsInTree = new TreeSet<>(graph.delta_out(vertex));
+			arcsInTree.retainAll(antiArbo);
+			
+			Set<Arc> arcsNotInTree = new TreeSet<>(graph.delta_out(vertex));
+			arcsNotInTree.removeAll(arcsInTree);
+			
+			Set<Arc> arcsToRoot = new TreeSet<>();
+			for (Arc arc : arcsNotInTree) {
 				if (arc.dst() == root) {
-					ret.add(arc);
-					continue;
+					arcsToRoot.add(arc);
 				}
-				
-				if (res.get(vertex) == null) {
-					res.put(vertex, new LinkedList<>());
-				}
-				res.get(vertex).add(arc);
 			}
-			if (res.get(vertex) == null) {
-				res.put(vertex, new LinkedList<>());
-			}
-			res.put(vertex, (LinkedList<Arc>) flip(res.get(vertex)));
-			res.get(vertex).addAll(ret);
-
+			arcsNotInTree.removeAll(arcsToRoot);
+			
+			
+			/* Adding all vertices to the queue */
+			
+			res.get(vertex).addAll(arcsToRoot);
+			res.get(vertex).addAll(arcsNotInTree);
+			res.get(vertex).addAll(arcsInTree);
 		}
 		
 		return res;
 	}
 	
-	public List<Integer> algo(int vertex) {
-		
-		Set<Integer> oddVertices = new TreeSet<>();
-		for (Integer i : graph.getVertices()) {
-			if (graph.neighbours_out(i).size() % 2 == 1) {
-				oddVertices.add(i);
-			}
-		}
-		
-		if (oddVertices.size() != 0 && oddVertices.size() != 2) {
-			return null;
-		}
-		
-		
-		
-		
-		Set<Arc> antiArbo = getAntiArbo(graph, vertex);
-		Map<Integer, LinkedList<Arc>> n = numberize(graph, antiArbo, vertex);
-		Integer current = vertex;
+	/* Remplis path */
+	public void doAlgo(IGraph graph, int root) {
+		Set<Arc> antiArbo = getAntiArbo(graph, root);
+		Map<Integer, Queue<Arc>> n = numberize(graph, antiArbo, root);
+		Integer current = root;
 		
 		if (DEBUG) {
 			System.out.println("Arborescence : " + antiArbo);
 			System.out.println("Numberized : " + n);
 			System.out.println("Current : " + current);
 		}
-		
-		
 		
 		path.add(current);
 		while (n.get(current) != null && !n.get(current).isEmpty()) {
@@ -148,11 +109,53 @@ public class GogolL {
 			}
 		}
 		
+	}
+	
+	public List<Integer> algo(IGraph graph, int root) {
+		
+		Set<Integer> oddVertices = new TreeSet<>();
+		for (Integer i : graph.getVertices()) {
+			if (graph.neighbours_out(i).size() % 2 == 1) {
+				oddVertices.add(i);
+			}
+		}
+		
+		if (DEBUG) System.out.println("OddVertices : " + oddVertices.size());
+		
+		if (oddVertices.size() != 0 && oddVertices.size() != 2) {
+			return null;
+		}
+		
+		int newRoot = root;
+		/* if root is not an odd vertex finding the nearest odd vertex to begin the algorithm */
+		if (!oddVertices.contains(root) && oddVertices.size() == 2) {
+			List<Integer> nearestPath = null;
+			for (Integer oddVertex : oddVertices) {
+				List<Integer> res =	Dijkstra.dijkstra(graph, root, oddVertex);
+				if (DEBUG) System.out.println(res);
+				if (nearestPath == null || res.size() < nearestPath.size()) {
+					nearestPath = res;
+				}
+			}
+			newRoot = nearestPath.get(nearestPath.size() - 1);
+			nearestPath.remove(nearestPath.size() - 1);
+			path.addAll(nearestPath);
+		}
+		
+		doAlgo(graph, newRoot);
+		
+		Integer lastVertex = path.get(path.size() - 1);
+		if (lastVertex != root) {
+			List<Integer> pathToRoot = Dijkstra.dijkstra(graph, lastVertex, root);
+			pathToRoot.remove(0); // Removing first element so it doesn't appear twice in the path
+			path.addAll(pathToRoot);
+		}
+		
 		if (DEBUG) {
 			System.out.println("Path : " + path);
 		}
 		
 		return path;
 	}
-
+	
 }
