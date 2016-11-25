@@ -8,14 +8,6 @@ import org.junit.Test;
 
 public class TestGogolL {
 	
-	private Set<Arc> arrayToColl(int[][] array) {
-		Set<Arc> res = new TreeSet<>();
-		for (int[] elt : array) {
-			res.add(new Arc(elt[0], elt[1]));
-		}
-		return res;
-	}
-	
 	private Set<Arc> arcsToEdge(Collection<Arc> coll) {
 		Set<Arc> withEdges = new TreeSet<>();
 		for (Arc arc : coll) {
@@ -53,23 +45,36 @@ public class TestGogolL {
 		testAlgoForEachVertex(graph, false);
 	}
 	
+	private void printEndInfo(IGraph graph, List<Integer> path, GogolL a) {
+		Set<Arc> antiArbo = a.getAntiTree(graph, path.get(0));
+		
+		System.out.println(algoSuceeded(graph, path));
+		System.out.println(path);
+		System.out.println(antiArbo);
+		System.out.println(a.numberize(graph,path.get(0), antiArbo));
+	}
+	
 	private void testAlgoForEachVertex(IGraph graph, boolean debug) {
 		for (Integer root : graph.getVertices()) {
-			List<Integer> path = new GogolL(debug).algo(graph, root);
-			//System.out.println(algoSuceeded(graph, path) + "\t" + path + "\t" + new GogolL().getAntiArbo(graph, root));
+			GogolL a = new GogolL();
+			List<Integer> path = a.algo(graph, root);
+			if (!algoSuceeded(graph, path))
+				printEndInfo(graph, path, a);
 			assert(algoSuceeded(graph, path));
 			assert(path.get(0) == path.get(path.size() - 1));
 		}
-		//System.out.println();
 	}
 	
+	public IGraph graphOfPath(String path) {
+		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File(path)));
+		return new AdjacencyListGraph(euler);
+	}
 	
 	/* Graphs with no odd degree vertices */
 	
 	@Test
 	public void testGraph1() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graph1.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
+		IGraph graph = graphOfPath("graphs/graph1.txt");
 		
 		testAlgoForEachVertex(graph);
 	}
@@ -77,46 +82,15 @@ public class TestGogolL {
 	
 	@Test
 	public void testGraph2() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graph2.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
+		IGraph graph = graphOfPath("graphs/graph2.txt");
 
 		testAlgoForEachVertex(graph);
 	}
 	
 	@Test
 	public void testGraph3() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graphodd1.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
+		IGraph graph = graphOfPath("graphs/graphodd1.txt");
 		graph.addEdge(new Arc(4, 10));
-		
-		testAlgoForEachVertex(graph);
-	}
-	
-	/* Graphs with 2 odd degree vertices */
-	
-	@Test
-	public void testOddGraph1() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graph1.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
-		graph.addEdge(new Arc(1, 5));
-		
-		testAlgoForEachVertex(graph);
-	}
-
-	
-	@Test
-	public void testOddGraph2() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graph2.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
-		graph.addEdge(new Arc(4, 11));
-		
-		testAlgoForEachVertex(graph);
-	}
-	
-	@Test
-	public void testOddGraph3() {
-		Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File("graphs/graphodd1.txt")));
-		IGraph graph = new AdjacencyListGraph(euler);
 		
 		testAlgoForEachVertex(graph);
 	}
