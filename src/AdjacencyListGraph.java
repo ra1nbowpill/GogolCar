@@ -19,6 +19,14 @@ public class AdjacencyListGraph extends IGraph{
 		}
 	}
 	
+	public AdjacencyListGraph(IGraph graph) {
+		for (Integer vertex : graph.getVertices()) {
+			for (Arc arc : graph.delta_out(vertex)) {
+				this.addArc(arc);
+			}
+		}
+	}
+	
 	@Override
 	public void addArc(Arc arc) {
 		
