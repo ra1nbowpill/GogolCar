@@ -43,6 +43,7 @@ public class AdjacencyListGraph extends IGraph{
 		
 		arcsTable.add(new LinkedList<>());
 		corresp.add(vertex);
+		this.V++;
 	}
 	@Override
 	public void removeArc(Arc A) {

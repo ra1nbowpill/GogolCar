@@ -14,6 +14,7 @@ public abstract class IGraph {
 	}
 	public void addArc(Arc A){
 		arcs.add(A);
+		this.A++;
 	}
 	public void addEdge (Arc A) {
 		addArc(A);
@@ -22,6 +23,7 @@ public abstract class IGraph {
 	public abstract void addVertex(Element vertex);
 	public void removeArc(Arc arc){
 		arcs.remove(arc);
+		this.A--;
 	}
 	public void removeEdge(Arc arc) {
 		removeArc(arc);

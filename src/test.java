@@ -13,7 +13,7 @@ public class test {
 		ville.addRoad("Rue 1", "Place 1", "Place 2");
 		ville.addRoad("Rue 2", "Place 2", "Place 3");
 		ville.removeRoad("Rue 1", "Place 1", "Place 2");
-		System.out.println(ville.toString());
+		System.out.println(ville.numberPlaces());
 	}
 
 }
