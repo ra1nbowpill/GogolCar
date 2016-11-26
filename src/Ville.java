@@ -1,42 +1,80 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ville {
 
-	private ArrayList<Road> roads = new ArrayList<>();
-	private ArrayList<String> places = new ArrayList<>();
-	
-	
+	IGraph graphe =new AdjacencyListGraph();
 	public void addPlace(String place) {
-		places.add(place);
+		Place p=new Place(place);
+		if(!this.getPlaces().contains(p))
+			graphe.addVertex(p);
 	}
-	
 	public void addRoad(Road road) {
-		roads.add(road);
-		if (!places.contains(road.getPlaceSrc())) {
-			places.add(road.getPlaceSrc());
-		}
-		if (!places.contains(road.getPlaceDst())) {
-			places.add(road.getPlaceDst());
-		}
+			Arc arc=new Arc(road.getPlaceSrc(), road.getPlaceDst(), road.getName());
+			graphe.addArc(arc);
 	}
-		
 	public void addRoad(String roadName, String placeSrc, String placeDst){
-		Road road = new Road(roadName, placeSrc, placeDst);
+		Element src,dst;
+		if(findPlace(placeSrc)==null)
+			src=new Place(placeSrc);
+		else
+			src=findPlace(placeSrc);
+		if(findPlace(placeDst)==null)
+			dst=new Place(placeDst);
+		else
+			dst=findPlace(placeDst);
+		Road road=new Road(roadName,(Place)src,(Place)dst);
 		addRoad(road);
 	}
-	
-	public ArrayList<Road> getRoads() {return roads;}
-	public ArrayList<String> getPlaces() {return places;}
-	
-	public Arc toArc(Road road) {
-		return new Arc(
-				getPlaces().indexOf(road.getPlaceSrc()),
-				getPlaces().indexOf(road.getPlaceDst()));
+	public Element findPlace(String place){
+		for (Element p : graphe.getVertices()) {
+			if(p.toString().equals(place))
+				return p;
+		}
+		return null;
 	}
-	
+	public void removeRoad(Road road){
+		removeRoad(road.getName(), road.getPlaceSrc().toString(), road.getPlaceDst().toString());
+	}
+	public void removeRoad(String roadName, String placeSrc, String placeDst){
+		for (Road road : getRoads()) {
+			if(road.getName().equals(roadName) && road.getPlaceSrc().toString().equals(placeSrc) && road.getPlaceDst().toString().equals(placeDst))
+				graphe.removeArc(toArc(road));
+		}
+	}
+	public void removePlace(Place place){
+		for (Element p : graphe.getVertices()) {
+			if(p.equals(place))
+				graphe.removeVertex(p);
+		}
+		
+	}
+	public void removePlace(String place){
+		for (Element p : graphe.getVertices()) {
+			if(p.toString().equals(place))
+				graphe.removeVertex(p);
+		}
+	}
+	public ArrayList<Road> getRoads() {
+		return this.toRoads(graphe.arcs);
+	}
+	public ArrayList<Element> getPlaces() {
+		ArrayList<Element> places=new ArrayList<>();
+		for (Element place : graphe.getVertices()) {
+			places.add(place);
+		}
+		return places;
+	}
+	public Arc toArc(Road road) {
+		for (Arc arc : graphe.arcs) {
+			if(arc.label().equals(road.getName()) && arc.src().toString().equals(road.getPlaceSrc().toString()) && arc.dst().toString().equals(road.getPlaceDst().toString()))
+				return arc;
+		}
+		return null;
+	}
 	public ArrayList<Arc> toArcs() {
 		ArrayList<Arc> arcs = new ArrayList<>();;
 		for(Road road : getRoads()) {
@@ -45,33 +83,20 @@ public class Ville {
 		}
 		return arcs;
 	}
-	
 	public int toVertex(String place) {
 		return getPlaces().indexOf(place);
 	}
-	
 	public ArrayList<Integer> toVertices() {
 		ArrayList<Integer> vertices = new ArrayList<>();
-		for(String place : getPlaces()) {
-			vertices.add(toVertex(place));
+		for(Element place : getPlaces()) {
+			vertices.add(toVertex(place.toString()));
 		}
 		return vertices;
 	}
-	
-	public Road toRoad(Arc arc) {
-		String placeSrc = getPlaces().get(arc.src),
-				placeDst = getPlaces().get(arc.dst);
-		
-		for (Road road : getRoads()) {
-			if (road.getPlaceSrc().equals(placeSrc) &&
-					road.getPlaceDst().equals(placeDst)) {
-				return road;
-			}
-		}
-		
-		return null;
+	public Road toRoad(Arc arc) {		
+		Road road=new Road(arc.label, (Place)arc.src, (Place)arc.dst);
+		return road;
 	}
-	
 	public ArrayList<Road> toRoads(ArrayList<Arc> arcs) {
 		ArrayList<Road> roads = new ArrayList<>();
 		for(Arc arc : arcs) {
@@ -79,11 +104,9 @@ public class Ville {
 		}
 		return roads;
 	}
-	
 	public String toPlace(int vertex) {
-		return getPlaces().get(vertex);
+		return getPlaces().get(vertex).toString();
 	}
-	
 	public ArrayList<String> toPlaces(ArrayList<Integer> vertices) {
 		ArrayList<String> places = new ArrayList<>();
 		for(int vertex : vertices) {
@@ -91,19 +114,17 @@ public class Ville {
 		}
 		return places;
 	}
-	
 	public String toString() {
 		String res = "";
-		res += places.size() + ".\n" + roads.size() + ".\n";
-		for (String place : places) {
-			res += place + ".\n";
+		res += graphe.getVertices().size() + ".\n" + graphe.arcs.size() + ".\n";
+		for (Element place : getPlaces()) {
+			res += place.toString() + ".\n";
 		}
-		for (Road road : roads) {
-			res += road.getName() +";" + road.getPlaceSrc() +";" + road.getPlaceDst() + ".\n";
+		for (Road road : getRoads()) {
+			res += road.getName() +"      de: " + road.getPlaceSrc() +" vers: " + road.getPlaceDst() + ".\n";
 		}
 		return res;
-	}
-			
+	}		
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville();
 		Integer nbPlaces = -1, nbRoads = -1;
@@ -135,7 +156,6 @@ public class Ville {
 		}
 		return ville;
 	}
-	
 	public static Ville createCity(File file) {
 		try {
 			Scanner s = new Scanner(file);
@@ -145,5 +165,4 @@ public class Ville {
 			return null;
 		}
 	}
-
 }

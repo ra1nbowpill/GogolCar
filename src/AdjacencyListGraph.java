@@ -2,37 +2,28 @@ import java.util.*;
 import java.util.stream.*;
 
 public class AdjacencyListGraph extends IGraph{
-	
-	ArrayList<LinkedList<Integer>> adjacencyList = new ArrayList<>();
-	ArrayList<Integer> corresp = new ArrayList<>();
+	ArrayList<LinkedList<Element>> arcsTable = new ArrayList<>();
+	ArrayList<Element> corresp = new ArrayList<>();
 	
 	public AdjacencyListGraph(Iterable<Arc> arcs) {
 		for (Arc arc : arcs) {
 			addArc(arc);
+			super.addArc(arc);
 		}
 	}
-	
-	public  AdjacencyListGraph(Iterable<Arc> arcs, Iterable<Integer> vertices) {
+	public  AdjacencyListGraph(Iterable<Arc> arcs, Iterable<Element> vertices) {
 		this(arcs);
-		for (int vertex : vertices) {
+		for (Element vertex : vertices) {
 			addVertex(vertex);
 		}
 	}
-	
-	public AdjacencyListGraph(IGraph graph) {
-		for (Integer vertex : graph.getVertices()) {
-			for (Arc arc : graph.delta_out(vertex)) {
-				this.addArc(arc);
-			}
-		}
+	public AdjacencyListGraph() {
+		// TODO Auto-generated constructor stub
 	}
-	
 	@Override
 	public void addArc(Arc arc) {
-		
 		int srcIndex = corresp.indexOf(arc.src()),
-				dstIndex = corresp.indexOf(arc.dst());
-		
+				dstIndex = corresp.indexOf(arc.dst());		
 		if (srcIndex == -1) {
 			addVertex(arc.src());
 			srcIndex = corresp.indexOf(arc.src());
@@ -41,35 +32,29 @@ public class AdjacencyListGraph extends IGraph{
 			addVertex(arc.dst());
 			dstIndex = corresp.indexOf(arc.dst());
 		}
-		
-		LinkedList<Integer> srcList = adjacencyList.get(srcIndex);
+		LinkedList<Element> srcList = arcsTable.get(srcIndex);
 		if (srcList.contains(arc.dst())) {return ;}
 		srcList.add(arc.dst());
-		A++;
+		super.addArc(arc);
 	}
-
 	@Override
-	public void addVertex(int vertex) {
+	public void addVertex(Element vertex) {
 		if (corresp.contains(vertex)) {return ;}
 		
-		adjacencyList.add(new LinkedList<>());
+		arcsTable.add(new LinkedList<>());
 		corresp.add(vertex);
-		V++;
 	}
-
 	@Override
-	public void removeArc(Arc arc) {
-		
-		int srcIndex = corresp.indexOf(arc.src());		
+	public void removeArc(Arc A) {
+		int srcIndex = corresp.indexOf(A.src());		
 		if (srcIndex == -1) {
 			return ;
 		}
-		adjacencyList.get(srcIndex).remove((Integer)arc.dst());
-		A--;
+		arcsTable.get(srcIndex).remove(A.dst());
+		super.removeArc(A);
 	}
-
 	@Override
-	public void removeVertex(int vertex) {
+	public void removeVertex(Element vertex) {
 		int srcIndex = corresp.indexOf(vertex);		
 		if (srcIndex == -1) {
 			return ;
@@ -78,59 +63,50 @@ public class AdjacencyListGraph extends IGraph{
 		for (Arc arc : delta_in(vertex)) {
 			removeArc(arc);
 		}
-		adjacencyList.remove(srcIndex);
+		arcsTable.remove(srcIndex);
 		corresp.remove(srcIndex);
-		V--;
 	}
-
 	@Override
-	public ArrayList<Arc> delta_out(int vertex) {
+	public ArrayList<Arc> delta_out(Element vertex) {
 		return (ArrayList<Arc>) neighbours_out(vertex)
-				.stream().map(dst -> new Arc(vertex, dst))
+				.stream().map(dst -> new Arc(vertex, dst,this.label(vertex, dst)))
 				.collect(Collectors.toList());
 	}
-
 	@Override
-	public ArrayList<Arc> delta_in(int vertex) {
+	public ArrayList<Arc> delta_in(Element vertex) {
 		return (ArrayList<Arc>) neighbours_in(vertex).stream()
-				.map(src -> new Arc(src, vertex))
+				.map(src -> new Arc(src, vertex,this.label(src, vertex)))
 				.collect(Collectors.toList());
 	}
-
 	@Override
-	public ArrayList<Integer> neighbours_out(int vertex) {
+	public ArrayList<Element> neighbours_out(Element vertex) {
 		int vertexIndex = corresp.indexOf(vertex);
 		if (vertexIndex == -1) {return new ArrayList<>();}
 		
-		return new ArrayList<>(adjacencyList.get(vertexIndex));
+		return new ArrayList<>(arcsTable.get(vertexIndex));
 	}
-
 	@Override
-	public ArrayList<Integer> neighbours_in(int vertex) {
-		ArrayList<Integer> neighbours = new ArrayList<>();
-		for (LinkedList<Integer> adjacency : adjacencyList) {
+	public ArrayList<Element> neighbours_in(Element vertex) {
+		ArrayList<Element> neighbours = new ArrayList<>();
+		for (LinkedList<Element> adjacency : arcsTable) {
 			if (adjacency.contains(vertex)) {
-				neighbours.add(corresp.get(adjacencyList.indexOf(adjacency)));
+				neighbours.add(corresp.get(arcsTable.indexOf(adjacency)));
 			}
 		}
 		return neighbours;
 	}
-
 	@Override
-	public ArrayList<Integer> getVertices() {
+	public ArrayList<Element> getVertices() {
 		return corresp;
 	}
-
 	@Override
 	public boolean isArc(Arc A) {
 		int srcIndex = corresp.indexOf(A.src());
 		if (srcIndex == -1) {return false;}
-		return adjacencyList.get(srcIndex).contains(A.dst());
+		return arcsTable.get(srcIndex).contains(A.dst());
 	}
-
 	@Override
-	public boolean isVertex(int vertex) {
+	public boolean isVertex(Element vertex) {
 		return corresp.contains(vertex);
 	}
-	
 }

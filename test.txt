@@ -1,0 +1,8 @@
+3.
+3.
+Place1.
+Place2.
+Place3.
+Rue1;Place1;Place2.
+Rue2;Place2;Place3.
+Rue3;Place1;Place3.

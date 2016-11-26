@@ -2,20 +2,20 @@
 public class Road {
 
 	private String name;
-	private String placeSrc, placeDst;
+	private Place placeSrc, placeDst;
 
-	public Road(String name, String placeSrc, String placeDst) {
+	public Road(String name, Place placeSrc, Place placeDst) {
 		this.name = name;
 		this.placeSrc = placeSrc;
 		this.placeDst = placeDst;
 	}
 
 	String getName() {return this.name;}
-	String getPlaceSrc() {return this.placeSrc;}
-	String getPlaceDst() {return this.placeDst;}
+	Place getPlaceSrc() {return this.placeSrc;}
+	Place getPlaceDst() {return this.placeDst;}
 	
 	public String toString() {
-		return "(" + getName() + ", " + getPlaceSrc() + ", " + getPlaceDst() + ")";
+		return "(" + getName() + ", " + getPlaceSrc().toString() + ", " + getPlaceDst().toString() + ")";
 	}
 
 }

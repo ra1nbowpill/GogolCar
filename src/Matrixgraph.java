@@ -2,24 +2,22 @@ import java.util.ArrayList;
 
 public class Matrixgraph extends IGraph{
 	
-	private int V;
-	private int E;
 	private boolean[][] graphMatrix ;
 	
 	public Matrixgraph(int V) {
 		// TODO Auto-generated constructor stub
 		if (V < 0) throw new RuntimeException("Number of vertices must be nonnegative");
         this.V = V;
-        this.E = 0;
+        this.A = 0;
         this.graphMatrix = new boolean[V][V];
 	}
 	
 	@Override
-	public void addArc(Arc A) {
+	public void addArc(Arc arc) {
 		// TODO Auto-generated method stub
-		if (!graphMatrix[A.src()][A.dst()]) E++;
-		graphMatrix[A.src()][A.dst()] = true;
-		graphMatrix[A.dst()][A.src()] = true;
+		if (!graphMatrix[arc.src()][arc.dst()]) A++;
+		graphMatrix[arc.src()][arc.dst()] = true;
+		graphMatrix[arc.dst()][arc.src()] = true;
 	}	
 
 	@Override
@@ -29,11 +27,11 @@ public class Matrixgraph extends IGraph{
 	}
 
 	@Override
-	public void removeArc(Arc A) {
+	public void removeArc(Arc arc) {
 		// TODO Auto-generated method stub
-		if (graphMatrix[A.src()][A.dst()]) E--;
-		graphMatrix[A.src()][A.dst()] = false;
-		graphMatrix[A.dst()][A.src()] = false;
+		if (graphMatrix[arc.src()][arc.dst()]) A--;
+		graphMatrix[arc.src()][arc.dst()] = false;
+		graphMatrix[arc.dst()][arc.src()] = false;
 	}
 
 	@Override
