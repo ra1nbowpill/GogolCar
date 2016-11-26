@@ -8,26 +8,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class GogolL implements Algo {
+public class GogolL {
 
 
-	private Map<Integer, Element> idToElt = new HashMap<>();
-	private Map<Element, Integer> eltToId = new HashMap<>();
-
-	private void initCorresp(IGraph graph) {
-		Integer id = 0;
-		for (Element elt : graph.getVertices()) {
-			idToElt.put(id, elt);
-			eltToId.put(elt, id);
-			id++;
-		}
-	}
-
-	private Integer get(Element elt) {return eltToId.get(elt);}
-	private Element get(Integer id) {return idToElt.get(id);}
-
-
-	
 	private List<Element> path = new ArrayList<>();
 	private Set<Element> visited = new TreeSet<>();
 	/**
@@ -96,9 +79,9 @@ public class GogolL implements Algo {
 	 * @param antiTree antiTree
 	 * @return
 	 */
-	public Map<Integer, Queue<Arc>> numberize(IGraph graph, Element root, Set<Arc> antiTree) {
+	public Map<Element, Queue<Arc>> numberize(IGraph graph, Element root, Set<Arc> antiTree) {
 		
-		Map<Integer, Queue<Arc>> res = new HashMap<>();
+		Map<Element, Queue<Arc>> res = new HashMap<>();
 		
 		for (Element vertex : graph.getVertices()) {
 			res.put(vertex, getOrder(graph, vertex, antiTree));
@@ -107,10 +90,10 @@ public class GogolL implements Algo {
 		return res;
 	}
 	
-	private void traversal(IGraph graph, int root,
-			Set<Arc> antiTree, Map<Integer, Queue<Arc>> arcsOrder) {
+	private void traversal(IGraph graph, Element root,
+			Set<Arc> antiTree, Map<Element, Queue<Arc>> arcsOrder) {
 		
-		Integer current = root;
+		Element current = root;
 		
 		path.add(current);
 		while (arcsOrder.get(current) != null && !arcsOrder.get(current).isEmpty()) {
@@ -131,9 +114,9 @@ public class GogolL implements Algo {
 		}
 	}
 	
-	public List<Integer> algo(IGraph graph, int root) {
+	public List<Element> algo(IGraph graph, Element root) {
 		Set<Arc> antiArbo = getAntiTree(graph, root);
-		Map<Integer, Queue<Arc>> arcsOrder = numberize(graph, root, antiArbo);		
+		Map<Element, Queue<Arc>> arcsOrder = numberize(graph, root, antiArbo);
 		
 		traversal(graph, root, antiArbo, arcsOrder);
 		return path;
