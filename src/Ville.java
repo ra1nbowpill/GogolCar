@@ -9,12 +9,14 @@ public class Ville {
 	IGraph graphe =new AdjacencyListGraph();
 	public void addPlace(String place) {
 		Place p=new Place(place);
-		if(!this.getPlaces().contains(p))
+		if(!this.getPlaces().contains(p)){
 			graphe.addVertex(p);
+		}
 	}
 	public void addRoad(Road road) {
-			Arc arc=new Arc(road.getPlaceSrc(), road.getPlaceDst(), road.getName());
-			graphe.addArc(arc);
+		Arc arc=new Arc(road.getPlaceSrc(), road.getPlaceDst(), road.getName());
+		graphe.addArc(arc);
+		
 	}
 	public void addRoad(String roadName, String placeSrc, String placeDst){
 		Element src,dst;
