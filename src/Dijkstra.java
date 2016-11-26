@@ -19,6 +19,13 @@ public class Dijkstra {
 	private Integer get(Element elt) {return eltToId.get(elt);}
 	private Element get(Integer id) {return idToElt.get(id);}
 
+	private IGraph graph;
+
+	public Dijkstra(IGraph graph) {
+		initCorresp(graph);
+		this.graph = graph;
+	}
+
 	private boolean isOver(int[] res) {
 		for (int i = 0; i < res.length; i++) {
 			if (res[i] == Integer.MAX_VALUE) {
@@ -28,7 +35,7 @@ public class Dijkstra {
 		return true;
 	}
 	
-	public int[] dijkstra(IGraph graph, int src) {
+	public int[] dijkstra(Element src) {
 
 		initCorresp(graph);
 
@@ -37,7 +44,7 @@ public class Dijkstra {
 		for (int i = 0; i < res.length; i++) {
 			res[i] = Integer.MAX_VALUE;
 		}
-		res[src] = 0;
+		res[get(src)] = 0;
 		
 		while(isOver(res)) {
 			System.out.println(Arrays.toString(res));
