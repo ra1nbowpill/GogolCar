@@ -124,7 +124,10 @@ public class Ville {
 			res += road.getName() +"      de: " + road.getPlaceSrc() +" vers: " + road.getPlaceDst() + ".\n";
 		}
 		return res;
-	}		
+	}
+	int numberPlaces(){
+		return this.graphe.V();
+	}
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville();
 		Integer nbPlaces = -1, nbRoads = -1;
