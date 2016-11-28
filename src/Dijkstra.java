@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Dijkstra {
 
@@ -34,35 +32,59 @@ public class Dijkstra {
 		}
 		return true;
 	}
-	
-	public int[] dijkstra(Element src) {
 
-		initCorresp(graph);
+	private int[][] dijkstra(Element src) {
 
 		int[] res = new int[graph.getVertices().size()];
-		/* fonction qui a un vertex renvoie un indice */
+		int[] pred = new int[graph.getVertices().size()];
+
 		for (int i = 0; i < res.length; i++) {
 			res[i] = Integer.MAX_VALUE;
+			pred[i] = -1;
 		}
 		res[get(src)] = 0;
-		
-		while(isOver(res)) {
-			System.out.println(Arrays.toString(res));
-			for (int i = 0; i < res.length; i++) {
-				if (res[i] == Integer.MAX_VALUE) {
+		pred[get(src)] = -1;
+
+		while(!isOver(res)){
+			for (int indV1 = 0; indV1 < res.length; indV1++) {
+				Element v1 = get(indV1);
+				if (res[indV1] == Integer.MAX_VALUE) {
 					continue;
 				}
-				for (Element neighbour : graph.neighbours_out(get(i))) {
-					if (res[get(neighbour)] > res[get(neighbour)] + 1) {
-						res[get(neighbour)] = res[get(neighbour)] + 1;
+				for (Element v2 : graph.neighbours_out(v1)) {
+					int indV2 = get(v2);
+					if (res[indV2] > res[indV1] + 1) {
+						res[indV2] = res[indV1] + 1;
+						pred[indV2] = indV1;
 					}
 				}
 			}
 		}
-		
-		return res;
+		int[][] a = new int[2][];
+		a[0] = res;
+		a[1] = pred;
+		return a;
 	}
-	
-	
-	
+
+	public List<Element> dijkstra(Element src, Element dst) {
+		if (!graph.isVertex(src) || !graph.isVertex(dst)) {
+			return null;
+		}
+		List<Element> predecessor = new ArrayList<>();
+
+		int[] pred = dijkstra(src)[1];
+
+		int vertAct = get(dst);
+		for(int i = 0; i < pred.length; i++) {
+			predecessor.add(get(vertAct));
+			vertAct = pred[vertAct];
+			if (vertAct == -1) {
+				break;
+			}
+		}
+		
+		Collections.reverse(predecessor);
+		return predecessor;
+	}
+
 }
