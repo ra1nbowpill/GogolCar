@@ -11,15 +11,24 @@ public class AdjacencyListGraph extends IGraph{
 			super.addArc(arc);
 		}
 	}
+
 	public  AdjacencyListGraph(Iterable<Arc> arcs, Iterable<Element> vertices) {
 		this(arcs);
 		for (Element vertex : vertices) {
 			addVertex(vertex);
 		}
 	}
-	public AdjacencyListGraph() {
-		// TODO Auto-generated constructor stub
+
+	public AdjacencyListGraph(IGraph graph) {
+		for (Element vertex : graph.getVertices()) {
+			for (Arc arc : graph.delta_out(vertex)) {
+				this.addArc(arc);
+			}
+		}
 	}
+
+	public AdjacencyListGraph() {}
+
 	@Override
 	public void addArc(Arc arc) {
 		int srcIndex = corresp.indexOf(arc.src()),
