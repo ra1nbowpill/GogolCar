@@ -7,6 +7,14 @@ import java.util.Scanner;
 public class Ville {
 
 	IGraph graphe =new AdjacencyListGraph();
+	String name;
+	public Ville(String name) {
+		super();
+		this.name = name;
+	}
+	public String villename(){
+		return name;
+	}
 	public void addPlace(String place) {
 		Place p=new Place(place);
 		if(!this.getPlaces().contains(p)){
@@ -31,12 +39,13 @@ public class Ville {
 		Road road=new Road(roadName,(Place)src,(Place)dst);
 		addRoad(road);
 	}
-	public Element findPlace(String place){
+	public Place findPlace(String place){
+		Place p1= new Place("Place000");
 		for (Element p : graphe.getVertices()) {
 			if(p.toString().equals(place))
-				return p;
+				return (Place)p;
 		}
-		return null;
+		return (Place)p1;
 	}
 	public void removeRoad(Road road){
 		removeRoad(road.getName(), road.getPlaceSrc().toString(), road.getPlaceDst().toString());
@@ -127,8 +136,18 @@ public class Ville {
 		}
 		return res;
 	}
+	public boolean placeExists(Place place){
+		for (Element p : this.getPlaces()) {
+			if(p.equals(place))
+				return true;
+		}
+		return false;
+	}
 	int numberPlaces(){
 		return this.graphe.V();
+	}
+	public ArrayList<Element> neighbors(Element place){
+		return graphe.neighbours_in(place);
 	}
 	public String generate(int length)
 	{
@@ -143,7 +162,7 @@ public class Ville {
 		    return pass;
 	}
 	private static Ville parseCity(Scanner s) {
-		Ville ville = new Ville();
+		Ville ville = new Ville("ville");
 		Integer nbPlaces = -1, nbRoads = -1;
 		
 		s.useDelimiter("\\.");
