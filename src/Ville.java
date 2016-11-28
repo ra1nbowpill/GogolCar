@@ -130,6 +130,18 @@ public class Ville {
 	int numberPlaces(){
 		return this.graphe.V();
 	}
+	public String generate(int length)
+	{
+		    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // Tu supprimes les lettres dont tu ne veux pas
+		    String pass = "";
+		    for(int x=0;x<length;x++)
+		    {
+		       int i = (int)Math.floor(Math.random() * 62); // Si tu supprimes des lettres tu diminues ce nb
+		       pass += chars.charAt(i);
+		    }
+		    System.out.println(pass);
+		    return pass;
+	}
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville();
 		Integer nbPlaces = -1, nbRoads = -1;
