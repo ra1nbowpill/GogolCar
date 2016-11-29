@@ -3,6 +3,7 @@ public class Arc {
 
 	Element src, dst;
 	String label;
+	Integer weight;
 	
 	
 	public Arc(Element src, Element dst, String label) {
@@ -11,6 +12,12 @@ public class Arc {
 		this.label = label;
 	}
 	
+	public Arc(Element src, Element dst, String label,Integer weight) {
+		this.src = src;
+		this.dst = dst;
+		this.label = label;
+		this.weight = weight;
+	}
 	
 	public Element src(){
 		return this.src;

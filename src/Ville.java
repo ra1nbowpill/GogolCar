@@ -40,12 +40,12 @@ public class Ville {
 		addRoad(road);
 	}
 	public Place findPlace(String place){
-		Place p1= new Place("Place000");
+		Place p1= new Place(place);
 		for (Element p : graphe.getVertices()) {
 			if(p.toString().equals(place))
 				return (Place)p;
 		}
-		return (Place)p1;
+		return null;
 	}
 	public void removeRoad(Road road){
 		removeRoad(road.getName(), road.getPlaceSrc().toString(), road.getPlaceDst().toString());
@@ -69,10 +69,10 @@ public class Ville {
 				graphe.removeVertex(p);
 		}
 	}
-	public ArrayList<Arc> route_in(Place place){
+	public ArrayList<Arc> route_in(Element place){
 		return graphe.delta_in(place);
 	}
-	public ArrayList<Arc> route_out(Place place){
+	public ArrayList<Arc> route_out(Element place){
 		return graphe.delta_in(place);
 	}
 	public ArrayList<Road> getRoads() {
