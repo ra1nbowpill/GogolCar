@@ -111,7 +111,7 @@ public class Ville {
 		return vertices;
 	}
 	public Road toRoad(Arc arc) {		
-		Road road=new Road(arc.label, (Place)arc.src, (Place)arc.dst);
+		Road road=new Road(arc.getLabel(), (Place)arc.getSrc(), (Place)arc.getDst());
 		return road;
 	}
 	public ArrayList<Road> toRoads(ArrayList<Arc> arcs) {
