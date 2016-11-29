@@ -1,5 +1,5 @@
 
-public class Arc {
+public class Arc implements Comparable<Arc> {
 
 	private Element src, dst;
 	private String label;
@@ -37,11 +37,33 @@ public class Arc {
 	}
 
 	public String toString() {
-		return "(" + src.toString() + "," + dst.toString()+ ","+label + ")";
+		return "(" + src.toString() + "," + dst.toString() + "," + label + " ," + weight() + ")";
 	}
 
 	public Arc antiArc() {
-		return new Arc(dst, src, "anti" + label);
+		return new Arc(dst, src, "anti" + label, weight);
 	}
 
+	@Override
+	public int compareTo(Arc o) {
+		if (src() != o.src()) {
+			return ((Place)src()).compareTo((Place)o.src());
+		} else if (dst() != o.dst()) {
+			return ((Place)dst()).compareTo((Place)o.dst());
+		} else if (weight() != o.weight()){
+			return weight().compareTo(o.weight());
+		} else {
+			return label().compareTo(o.label());
+		}
+	}
+
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		} else if (o instanceof Arc) {
+			Arc a = (Arc) o;
+			return src() == a.src() && dst() == a.dst() && weight() == a.weight();
+		}
+		return false;
+	}
 }
