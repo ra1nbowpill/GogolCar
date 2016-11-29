@@ -146,8 +146,11 @@ public class Ville {
 	int numberPlaces(){
 		return this.graphe.V();
 	}
-	public ArrayList<Element> neighbors(Element place){
+	public ArrayList<Element> neighbors_in(Element place){
 		return graphe.neighbours_in(place);
+	}
+	public ArrayList<Element> neighbors_out(Element place){
+		return graphe.neighbours_out(place);
 	}
 	public String generate(int length)
 	{
