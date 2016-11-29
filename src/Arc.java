@@ -5,11 +5,12 @@ public class Arc {
 	private String label;
 	private Integer weight;
 	
-	
+	public Arc(Element src, Element dst) {
+		this(src, dst, Ville.generate(10));
+	}
+
 	public Arc(Element src, Element dst, String label) {
-		this.src = src;
-		this.dst = dst;
-		this.label = label;
+		this(src, dst, Ville.generate(10), null);
 	}
 	
 	public Arc(Element src, Element dst, String label,Integer weight) {
