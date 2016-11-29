@@ -12,6 +12,7 @@ public class test {
 		ville.addPlace("Place 6");
 		ville.addPlace("Place 7");
 		ville.addPlace("Place 8");
+		ville.addPlace("Place 9");
 		ville.addRoad("Rue 1", "Place 1", "Place 2");
 		ville.addRoad("Rue 2", "Place 2", "Place 3");
 		ville.addRoad("Rue 3", "Place 3", "Place 4");
@@ -19,6 +20,7 @@ public class test {
 		ville.addRoad("Rue 5", "Place 5", "Place 6");
 		ville.addRoad("Rue 6", "Place 4", "Place 7");
 		ville.addRoad("Rue 7", "Place 7", "Place 8");
+		ville.addRoad("Rue 1", "Place 1", "Place 9");
 		GogolS gogolS= new GogolS(ville,"Place 1");
 	}
 

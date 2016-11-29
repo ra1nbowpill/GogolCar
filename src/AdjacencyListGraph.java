@@ -90,18 +90,20 @@ public class AdjacencyListGraph extends IGraph{
 	}
 	@Override
 	public ArrayList<Element> neighbours_out(Element vertex) {
-		int vertexIndex = corresp.indexOf(vertex);
-		if (vertexIndex == -1) {return new ArrayList<>();}
-		
-		return new ArrayList<>(arcsTable.get(vertexIndex));
+		ArrayList<Element> neighbours = new ArrayList<>();
+		for (Arc arc : arcs) {
+			if(arc.src().equals(vertex)){
+				neighbours.add(arc.dst());	
+			}
+		}
+		return neighbours;
 	}
 	@Override
 	public ArrayList<Element> neighbours_in(Element vertex) {
 		ArrayList<Element> neighbours = new ArrayList<>();
-		for (LinkedList<Element> adjacency : arcsTable) {
-			if (adjacency.contains(vertex)) {
-				neighbours.add(corresp.get(arcsTable.indexOf(adjacency)));
-			}
+		for (Arc arc : arcs) {
+			if(arc.dst().equals(vertex))
+				neighbours.add(arc.src());
 		}
 		return neighbours;
 	}
