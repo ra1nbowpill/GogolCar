@@ -1,7 +1,7 @@
+import org.junit.Test;
+
 import java.io.File;
 import java.util.*;
-
-import org.junit.Test;
 
 public class TestGogolL {
 
@@ -28,7 +28,7 @@ public class TestGogolL {
 
         List<Arc> pathhsss = new ArrayList<>();
         for (int i = 1; i < path.size(); i++) {
-            Arc a = new Arc(path.get(i-1), path.get(i), "");
+            Arc a = new Arc(path.get(i-1), path.get(i));
             pathhsss.add(a);
             pathhsss.add(a.antiArc());
         }
@@ -43,20 +43,23 @@ public class TestGogolL {
     }
 
     private void printEndInfo(IGraph graph, List<Element> path, GogolL a) {
-        List<Arc> antiArbo = a.getAntiTree(graph, path.get(0));
+        Set<Arc> antiArbo = a.publicAntiTree(path.get(0));
 
-        System.out.println(algoSuceeded(graph, path));
-        System.out.println(path);
-        System.out.println(antiArbo);
-        System.out.println(a.numberize(graph,path.get(0), antiArbo));
+        System.out.println("Sucess : " + algoSuceeded(graph, path));
+        System.out.println("Path : " + path);
+        System.out.println("AntiArbo : " + antiArbo);
+        a.DEBUG = true;
+        System.out.println("Order : " + a.numberize(antiArbo));
+        a.DEBUG = false;
     }
 
     private void testAlgoForEachVertex(Ville city, boolean debug) {
         for (Element root : city.getPlaces()) {
-            GogolL a = new GogolL(city);
+            Algo a = new GogolL();
+            a.setCity(city);
             List<Element> path = a.algo(root);
-            if (!algoSuceeded(city.graphe, path))
-                printEndInfo(city.graphe, path, a);
+            if (!algoSuceeded(city.graphe, path) || path.get(0) != path.get(path.size() - 1))
+                printEndInfo(city.graphe, path, (GogolL)a);
             assert(algoSuceeded(city.graphe, path));
             assert(path.get(0) == path.get(path.size() - 1));
         }
@@ -73,20 +76,11 @@ public class TestGogolL {
 
 	/* Graphs with no odd degree vertices */
 
-    @Test
+	@Test
     public void testGraph1() {
         Ville city = cityOfPath("cities/city1.txt");
 
         testAlgoForEachVertex(city);
-    }
-
-    @Test
-    public void testGraph11() {
-        Ville city = cityOfPath("cities/city1.txt");
-        GogolL algo = new GogolL(city);
-        List<Road> antiTree = algo.getAntiTree(city, city.findPlace("Place1"));
-        System.out.println(antiTree);
-
     }
 
 
@@ -102,5 +96,22 @@ public class TestGogolL {
         Ville city = cityOfPath("cities/city3.txt");
 
         testAlgoForEachVertex(city);
+    }
+
+    @Test
+    public void testGraph4() {
+        Ville city = cityOfPath("cities/city4.txt");
+
+        testAlgoForEachVertex(city);
+    }
+
+    @Test
+    public void testGraph5() {
+        Ville city = cityOfPath("cities/cityodd1.txt");
+
+        Algo a = new GogolL();
+        a.setCity(city);
+        List<Element> path = a.algo(city.getPlaces().get(0));
+        assert(path == null);
     }
 }

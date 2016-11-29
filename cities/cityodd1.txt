@@ -1,5 +1,5 @@
 4.
-4.
+5.
 PlaceSympa.
 PlaceCool.
 PlaceTarpin.
@@ -8,3 +8,4 @@ RueTertre;PlaceSympa;PlaceCool.
 RueMinante;Placebo;PlaceSympa.
 RueBan;PlaceCool;PlaceTarpin.
 RueStique;Placebo;PlaceTarpin.
+RueBéole;Placebo;PlaceCool.

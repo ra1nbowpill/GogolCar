@@ -1,5 +1,5 @@
 8.
-12.
+11.
 PlaceSympa.
 PlaceCool.
 PlacEnta.
@@ -19,4 +19,3 @@ RueBanbelle;PlaceBo;PlaceTique.
 RueMière;PlacEnta;PlaceTique.
 RueAle;PlaceTique;PlaceTarpin.
 RueMeux;PlaceMa;PlaceTarpin.
-RueMeu;PlaceBo;PlaceSympa.
