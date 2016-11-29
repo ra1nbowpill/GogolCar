@@ -65,6 +65,23 @@ public class TestGogolL {
         }
     }
 
+    private Arc verticesToArc(IGraph graph, Element e1, Element e2) {
+        for (Arc a : graph.arcs) {
+            if (a.src() == e1 && a.dst() == e2) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    private List<Arc> listVerticesToListArc(IGraph graph, List<Element> res) {
+        List<Arc> res2 = new ArrayList<>();
+        for (int i = 1; i < res.size(); i++) {
+            res2.add(verticesToArc(graph, res.get(i-1), res.get(i)));
+        }
+        return res2;
+    }
+
     /*public IGraph graphOfPath(String path) {
         Collection<Arc> euler = arcsToEdge(ParseEasy.toSet(new File(path)));
         return new AdjacencyListGraph(euler);
@@ -114,4 +131,19 @@ public class TestGogolL {
         List<Element> path = a.algo(city.getPlaces().get(0));
         assert(path == null);
     }
+
+    @Test
+    public void testRes() {
+        Ville city = cityOfPath("cities/city3.txt");
+        Algo algo = new GogolL();
+        algo.setCity(city);
+        List<Element> res = algo.algo("PlacEnta");
+
+        System.out.println(listVerticesToListArc(city.graphe, res));
+
+    }
+
+    /* Empty city cannot do anything as they don't have no plaza
+     * the algorithm cannot begin so it returns null */
+
 }
