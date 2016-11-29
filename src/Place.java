@@ -5,6 +5,9 @@ public class Place extends Element implements Comparable<Place> {
 	public Place(String name) {
 		this.name = name;
 	}
+	
+	public Place(){
+	}
 
 	public String getName() {
 		return name;
