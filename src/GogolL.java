@@ -169,6 +169,7 @@ public class GogolL implements Algo {
 		Place beginningPlace = city.findPlace(place);
 		if (beginningPlace == null) {
 			System.err.println("Place " + place + " does not exist");
+			return null;
 		}
 		return algo(beginningPlace);
 	}
