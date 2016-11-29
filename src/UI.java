@@ -203,7 +203,17 @@ public class UI {
     }
 
     private static void printUsage() {
-        System.out.println("Usage : ./GogolCar inputFile algoritme outputFile");
+        String usage = "" +
+                "Usage : ./GogolCar\n";
+
+        String manual = "" +
+                "-h --help\t: print this message\n" +
+                "-a --algo\t: sets the algorithm to be executed\n" +
+                "-p --plaza\t: sets the beginning plaza\n" +
+                "-c --city\t: sets the file containing the city\n" +
+                "-o --output\t: sets the output file\n";
+        System.out.print(usage);
+        //System.out.print(manual);
         System.exit(1);
     }
 
