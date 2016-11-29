@@ -69,6 +69,12 @@ public class Ville {
 				graphe.removeVertex(p);
 		}
 	}
+	public ArrayList<Arc> route_in(Place place){
+		return graphe.delta_in(place);
+	}
+	public ArrayList<Arc> route_out(Place place){
+		return graphe.delta_in(place);
+	}
 	public ArrayList<Road> getRoads() {
 		return this.toRoads(graphe.arcs);
 	}
