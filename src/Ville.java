@@ -155,7 +155,7 @@ public class Ville {
 		    String pass = "";
 		    for(int x=0;x<length;x++)
 		    {
-		       int i = (int)Math.floor(Math.random() * 62); // Si tu supprimes des lettres tu diminues ce nb
+		       int i = (int)Math.floor(Math.random() * chars.length());
 		       pass += chars.charAt(i);
 		    }
 		    System.out.println(pass);
