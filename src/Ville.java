@@ -40,7 +40,6 @@ public class Ville {
 		addRoad(road);
 	}
 	public Place findPlace(String place){
-		Place p1= new Place(place);
 		for (Element p : graphe.getVertices()) {
 			if(p.toString().equals(place))
 				return (Place)p;
@@ -195,6 +194,7 @@ public class Ville {
 			String data[] = s.next().trim().split(";", 3);
 			if (data.length == 3) {
 				ville.addRoad(data[0], data[1], data[2]);
+				ville.addRoad(data[0], data[2], data[1]);
 			} else {
 				System.out.println("Bad format in road declarations");
 			}
