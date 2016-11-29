@@ -10,7 +10,7 @@ public class Arc implements Comparable<Arc> {
 	}
 
 	public Arc(Element src, Element dst, String label) {
-		this(src, dst, Ville.generate(10), null);
+		this(src, dst, label, null);
 	}
 	
 	public Arc(Element src, Element dst, String label,Integer weight) {
