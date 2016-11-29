@@ -157,7 +157,9 @@ public class Ville {
 	public ArrayList<Element> neighbors_out(Element place){
 		return graphe.neighbours_out(place);
 	}
-	public String generate(int length)
+
+
+	public static String generate(int length)
 	{
 		    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // Tu supprimes les lettres dont tu ne veux pas
 		    String pass = "";
@@ -169,6 +171,7 @@ public class Ville {
 		    System.out.println(pass);
 		    return pass;
 	}
+
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville("ville");
 		Integer nbPlaces = -1, nbRoads = -1;
@@ -201,6 +204,7 @@ public class Ville {
 		}
 		return ville;
 	}
+
 	public static Ville createCity(File file) {
 		try {
 			Scanner s = new Scanner(file);
