@@ -168,7 +168,7 @@ public class Ville {
 		       int i = (int)Math.floor(Math.random() * chars.length());
 		       pass += chars.charAt(i);
 		    }
-		    System.out.println(pass);
+		    //System.out.println(pass);
 		    return pass;
 	}
 
