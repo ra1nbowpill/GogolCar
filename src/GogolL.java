@@ -10,18 +10,26 @@ import java.util.TreeSet;
 
 public class GogolL {
 
+	private IGraph graph;
+	private Ville city;
 
 	private List<Element> path = new ArrayList<>();
-	private Set<Element> visited = new TreeSet<>();
+
+	public GogolL(Ville city) {
+		this.graph = city.graphe;
+		this.city = city;
+	}
+
 	/**
 	 * Compute antiTree from graph
 	 * @param graph
 	 * @param root the antiRoot
 	 * @return set of arcs representing antiTree
 	 */
-	public Set<Arc> getAntiTree(IGraph graph, Element root) {
+	private List<Element> visited = new ArrayList<>();
+	public List<Arc> getAntiTree(IGraph graph, Element root) {
 		if (!graph.isVertex(root)) {return null;}
-		Set<Arc> arbo = new TreeSet<>();
+		List<Arc> arbo = new ArrayList<>();
 		visited.add(root);
 		for (Element neighbour : graph.neighbours_out(root)) {
 			if (!visited.contains(neighbour)) {
@@ -32,8 +40,26 @@ public class GogolL {
 		return arbo;
 	}
 
+	private List<Element> visited2 = new ArrayList<>();
+	public List<Road> getAntiTree(Ville city, Element beginningPlace) {
+
+		if (!city.placeExists((Place)beginningPlace)) {return null;}
+
+		List<Road> arbo = new ArrayList<>();
+		visited2.add(beginningPlace);
+
+		for (Element neighbour : city.neighbors(beginningPlace)) {
+			if (!visited2.contains(neighbour)) {
+				arbo.add(new Road("", (Place)neighbour, (Place)beginningPlace));
+				arbo.addAll(getAntiTree(city, neighbour));
+			}
+		}
+		
+		return arbo;
+	}
+
 	/* Define visiting order of arcs */
-	private Queue<Arc> getOrder(IGraph graph, Element vertex, Set<Arc> antiArbo) {
+	private Queue<Arc> getOrder(IGraph graph, Element vertex, List<Arc> antiArbo) {
 		Queue<Arc> order = new LinkedList<>();
 		
 		List<Arc> bigNumber = new ArrayList<>(),
@@ -79,7 +105,7 @@ public class GogolL {
 	 * @param antiTree antiTree
 	 * @return
 	 */
-	public Map<Element, Queue<Arc>> numberize(IGraph graph, Element root, Set<Arc> antiTree) {
+	public Map<Element, Queue<Arc>> numberize(IGraph graph, Element root, List<Arc> antiTree) {
 		
 		Map<Element, Queue<Arc>> res = new HashMap<>();
 		
@@ -91,7 +117,7 @@ public class GogolL {
 	}
 	
 	private void traversal(IGraph graph, Element root,
-			Set<Arc> antiTree, Map<Element, Queue<Arc>> arcsOrder) {
+			List<Arc> antiTree, Map<Element, Queue<Arc>> arcsOrder) {
 		
 		Element current = root;
 		
@@ -113,9 +139,17 @@ public class GogolL {
 
 		}
 	}
+
+	public List<Element> algo(String place) {
+		Place beginningPlace = city.findPlace(place);
+		if (beginningPlace == null) {
+			System.err.println("Place " + place + " does not exist");
+		}
+		return algo(beginningPlace);
+	}
 	
-	public List<Element> algo(IGraph graph, Element root) {
-		Set<Arc> antiArbo = getAntiTree(graph, root);
+	public List<Element> algo(Element root) {
+		List<Arc> antiArbo = getAntiTree(graph, root);
 		Map<Element, Queue<Arc>> arcsOrder = numberize(graph, root, antiArbo);
 		
 		traversal(graph, root, antiArbo, arcsOrder);
