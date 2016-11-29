@@ -27,4 +27,8 @@ public class Arc {
 		return "(" + src.toString() + "," + dst.toString()+ ","+label + ")";
 	}
 
+	public Arc antiArc() {
+		return new Arc(dst, src, "anti" + label);
+	}
+
 }
