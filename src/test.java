@@ -22,6 +22,7 @@ public class test {
 		ville.addRoad("Rue 7", "Place 7", "Place 8");
 		ville.addRoad("Rue 1", "Place 1", "Place 9");
 		GogolS gogolS= new GogolS(ville,"Place 1");
+		System.out.println(gogolS.results());
 	}
 
 }

@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import javax.lang.model.element.NestingKind;
 
 public class GogolS {
 	HashMap<Place, Boolean> marked=new HashMap<Place, Boolean>();
+	ArrayList<String> results=new ArrayList<>();
     public GogolS(Ville ville,String place){
     	Element p1=ville.findPlace(place);
     	for (Element p : ville.getPlaces()) {
@@ -15,7 +17,7 @@ public class GogolS {
     	Dfs(ville,(Place)p1);
     	for (Element p : ville.getPlaces()) {
 			if(!marked.get(p))
-				System.out.println(p.toString()+"déconnécté");
+				results.add(p.toString()+"déconnécté");
 		}
     }
 	private void validatePlace(Ville ville, Place place) {
@@ -26,7 +28,7 @@ public class GogolS {
         Boolean bool1=false,bool2=false;
         validatePlace(ville, place);
         marked.put(place, true);
-        System.out.println(place.toString());
+        results.add(place.toString());
         for (Element p : ville.graphe.neighbours_out(place)) {
 			if(!marked.get(p))
 				bool1=true;
@@ -36,12 +38,15 @@ public class GogolS {
 	        	p= (Place) p;
 	            if (!marked.get(p)) {
 	                Dfs(ville, (Place)p);
-	                System.out.println(place.toString());
+	                results.add(place.toString());
 	                bool2=true;
 	                }
 	        }
 	        if(!bool2)
-	        	System.out.println(place.toString());
+	        	results.add(place.toString());
         }
     }
+	public ArrayList<String> results(){
+		return results;
+	}
 }
