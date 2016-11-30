@@ -1,11 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class GogolL implements Algo {
 
@@ -122,7 +115,6 @@ public class GogolL implements Algo {
 
 			current = a.dst();
 			path.add(city.toRoad(a));
-
 		}
 	}
 
@@ -148,7 +140,7 @@ public class GogolL implements Algo {
 		if (oddVertices().size() != 0) {
 			System.out.println("This city is not eulerian");
 			System.out.println("Could not execute GogolL");
-			return null;
+			return Collections.emptyList();
 		}
 
 		path = new ArrayList<>();
@@ -165,7 +157,7 @@ public class GogolL implements Algo {
 		Place beginningPlace = city.findPlace(place);
 		if (beginningPlace == null) {
 			System.err.println("Place " + place + " does not exist");
-			return null;
+			return Collections.emptyList();
 		}
 		return algo(beginningPlace);
 	}
