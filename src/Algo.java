@@ -12,7 +12,7 @@ public interface Algo {
 	* */
 
 	public void setCity(Ville city);
-	public List<Element> algo(Element beginningPlace);
-	public List<Element> algo(String strBeginningPlace);
+	public List<Road> algo(Element beginningPlace);
+	public List<Road> algo(String strBeginningPlace);
 
 }
