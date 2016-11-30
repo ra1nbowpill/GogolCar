@@ -17,5 +17,8 @@ public class Road {
 	public String toString() {
 		return "(" + getName() + ", " + getPlaceSrc().toString() + ", " + getPlaceDst().toString() + ")";
 	}
-
+	
+	public boolean equals(Road r){
+		return (this.name.equals(r.name) && this.placeSrc.equals(r.placeSrc) && this.placeDst.equals(r.placeDst));
+	}
 }

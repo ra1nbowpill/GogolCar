@@ -148,6 +148,14 @@ public class Ville {
 		}
 		return false;
 	}
+	public Boolean roadExists(Road road){
+		for (Road route : getRoads()) {
+			if(route.equals(road))
+				return true;
+		}
+		return false;
+		
+	}
 	int numberPlaces(){
 		return this.graphe.V();
 	}
@@ -157,8 +165,14 @@ public class Ville {
 	public ArrayList<Element> neighbors_out(Element place){
 		return graphe.neighbours_out(place);
 	}
-
-
+	public ArrayList<Arc> neighbors_roads(Arc road){
+		ArrayList<Arc> roads=new ArrayList<Arc>();
+		for (Arc route : graphe.arcs) {
+			if(route.src().equals(road.dst()) && !route.equals(road))
+				roads.add(route);
+		}
+		return roads;
+	}
 	public static String generate(int length)
 	{
 		    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // Tu supprimes les lettres dont tu ne veux pas
@@ -171,7 +185,6 @@ public class Ville {
 		    //System.out.println(pass);
 		    return pass;
 	}
-
 	private static Ville parseCity(Scanner s) {
 		Ville ville = new Ville("ville");
 		Integer nbPlaces = -1, nbRoads = -1;
@@ -204,7 +217,6 @@ public class Ville {
 		}
 		return ville;
 	}
-
 	public static Ville createCity(File file) {
 		try {
 			Scanner s = new Scanner(file);

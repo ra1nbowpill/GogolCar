@@ -138,7 +138,7 @@ public class TestGogolL {
         Algo algo = new GogolL();
         algo.setCity(city);
         List<Element> res = algo.algo("PlacEnta");
-
+        GogolXl algo2= new GogolXL(city);
         System.out.println(listVerticesToListArc(city.graphe, res));
 
     }

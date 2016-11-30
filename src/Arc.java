@@ -45,7 +45,7 @@ public class Arc implements Comparable<Arc> {
 	}
 
 	public String toString() {
-		return "(" + src.toString() + "," + dst.toString() + "," + label + " ," + weight() + ")";
+		return "(" + label + " :" +src.toString() + "-> " + dst.toString() +")"+"\n";
 	}
 
 	public Arc antiArc() {
