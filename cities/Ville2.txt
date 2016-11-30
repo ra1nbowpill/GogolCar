@@ -36,7 +36,7 @@ Rue FG;Place du F;Place du G.
 Rue GH;Place du G;Place du H.
 Rue GI;Place du G;Place du I.
 Rue HI;Place du H;Place du I.
-Rue HJ;Place du H;PLace du J.
+Rue HJ;Place du H;Place du J.
 Rue IP;Place du I;Place du P.
 Rue JK;Place du J;Place du K.
 Rue JR;Place du J;Place du R.
