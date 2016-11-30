@@ -1,9 +1,17 @@
 
 public class Arc implements Comparable<Arc> {
 
+
 	private Element src, dst;
 	private String label;
 	private Integer weight;
+	
+	/**
+	 * @return the weight
+	 */
+	public Integer getWeight() {
+		return weight;
+	}
 	
 	public Arc(Element src, Element dst) {
 		this(src, dst, Ville.generate(10));
