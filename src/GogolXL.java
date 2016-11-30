@@ -133,11 +133,11 @@ public class GogolXL implements Algo {
 	
 	public List<Road> algo(Ville city, Element root) {
 
-		if (oddVertices(city).isEmpty()) {
+		/*if (oddVertices(city).isEmpty()) {
 			GogolL a = new GogolL();
 			a.setCity(city);
 			return a.algo(root);
-		}
+		}*/
 
 		Ville oddGraph = constructOddGraph(city);
 

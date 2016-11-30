@@ -62,7 +62,7 @@ public class TestAlgoBlackBox {
 
             if (path != null)
                 printEndInfo(city.graphe, path, algo);
-            assert (path == null);
+            assert (path.isEmpty());
         }
     }
 
