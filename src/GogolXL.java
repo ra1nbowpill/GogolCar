@@ -20,7 +20,6 @@ public class GogolXL implements Algo {
 	 */
 
 	private Ville city;
-	private IGraph graph;
 
 	public GogolXL() {}
 
@@ -144,7 +143,6 @@ public class GogolXL implements Algo {
 	@Override
 	public void setCity(Ville city) {
 		this.city = city;
-		this.graph = city.graphe;
 	}
 
 	@Override
