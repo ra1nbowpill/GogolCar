@@ -37,10 +37,9 @@ public class UI {
             strAlgo = strAlgo.toUpperCase();
         }
         switch (strAlgo) {
-            //TODO
-            //case "S" : return new GogolS();
+            case "S" : return new GogolS();
             case "L" : return new GogolL();
-            //case "XL" : return new GogolXL();
+            case "XL" : return new GogolXL();
         }
         return null;
     }
