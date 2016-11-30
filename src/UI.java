@@ -152,7 +152,9 @@ public class UI {
     private static boolean writeResultOnOutputFile(File outputFile, List<Road> result) {
         try {
             Writer writer = new FileWriter(outputFile);
-            writer.write(result.toString());
+            for (Road r : result) {
+                writer.write(r.getName() + " : " + r.getPlaceSrc() + " -> " + r.getPlaceDst() + "\n");
+            }
             writer.close();
             return true;
         } catch(IOException e) {
@@ -263,7 +265,10 @@ public class UI {
         result = algo.algo(startingPlaza);
 
         System.out.println("Voici le chemin a parcourir pour photographier toute la ville :");
-        System.out.println(result);
+        //System.out.println(result);
+        for (Road r : result) {
+            System.out.println(r.getName() + " : " + r.getPlaceSrc() + " -> " + r.getPlaceDst());
+        }
 
         if (outputFile == null)
             outputFile = askForOutputFile();

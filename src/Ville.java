@@ -5,7 +5,8 @@ import java.util.Scanner;
 
 public class Ville {
 
-	IGraph graphe =new AdjacencyListGraph();
+	//IGraph graphe =new AdjacencyListGraph();
+	IGraph graphe = new AdjacencyListGraphMulti();
 	String name;
 	public Ville(String name) {
 		super();

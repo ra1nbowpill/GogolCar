@@ -121,7 +121,7 @@ public class GogolL implements Algo {
 			arcsOrder.put(a.dst(), bbb);
 
 			current = a.dst();
-			path.add(new Road(a.label(), (Place) a.src(), (Place) a.dst()));
+			path.add(city.toRoad(a));
 
 		}
 	}

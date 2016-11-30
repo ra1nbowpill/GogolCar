@@ -97,7 +97,17 @@ public class GogolXL implements Algo {
 	private List<Arc> arcsOfPath(List<Element> path) {
 		List<Arc> arcs = new ArrayList<>();
 		for (int i = 1; i < path.size(); i++) {
-			arcs.add(new Arc(path.get(i-1), path.get(i), ""));
+
+			Arc a = null;
+			for (Arc arc : city.graphe.delta_out(path.get(i-1))) {
+				if (arc.dst().equals(path.get(i))) {
+					a = arc;
+					break;
+				}
+			}
+
+			arcs.add(a);
+			//arcs.add(new Arc(path.get(i-1), path.get(i), ""));
 		}
 		return arcs;
 	}
