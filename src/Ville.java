@@ -214,4 +214,8 @@ public class Ville {
 			return null;
 		}
 	}
+
+	public static Ville createCity(String path) {
+		return createCity(new File(path));
+	}
 }
