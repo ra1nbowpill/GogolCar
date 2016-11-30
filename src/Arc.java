@@ -49,7 +49,7 @@ public class Arc implements Comparable<Arc> {
 	}
 
 	public Arc antiArc() {
-		return new Arc(dst, src, label + " ", weight);
+		return new Arc(dst, src, "anti" + label, weight);
 	}
 
 	@Override
