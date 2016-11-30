@@ -1,82 +1,62 @@
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import javax.lang.model.element.NestingKind;
-
-public class GogolS implements Algo {
-
-	private Ville city;
-
-	private HashMap<Element, Boolean> marked=new HashMap<>();
-	private ArrayList<Element> results=new ArrayList<>();
-
-	public GogolS() {}
-
-    public GogolS(Ville ville,String place){
-    	Element p1=ville.findPlace(place);
-    	for (Element p : ville.getPlaces()) {
-			marked.put(p, false);
+public class GogolSS implements Algo{
+	HashMap<Arc, Boolean> marked=new HashMap<Arc, Boolean>();
+	List<Road> results=new ArrayList<>();
+	Ville city;
+	public GogolSS(){
+		
+	}
+	public GogolSS(Ville ville, String place){
+		for (Road road : ville.getRoads()) {
+			marked.put(ville.toArc(road), false);
 		}
-    	Dfs(ville,p1);
-    	for (Element p : ville.getPlaces()) {
-			if(!marked.get(p)) {
-				//results.add(p.toString()+"déconnécté");
-				System.err.println("The city is not connex");
-				break;
-			}
-
-		}
-    }
-
-	private void validatePlace(Ville ville, Element place) {
-		if(!ville.placeExists((Place)place))
-			throw new IllegalArgumentException( " n'existe pas dans " + ville.villename());
-    }
-
-	private void Dfs(Ville ville, Element place) {
-        Boolean bool1=false,bool2=false;
-        validatePlace(ville, place);
-        marked.put(place, true);
-        results.add(place);
-        for (Element p : ville.graphe.neighbours_out(place)) {
-			if(!marked.get(p)) {
-				bool1 = true;
+		for (Road road : ville.getRoads()) {
+			if(road.getPlaceSrc().equals(ville.findPlace(place))){
+				Dfs(ville,ville.toArc(road));
+				results.add(ville.toRoad(ville.toArc(road).antiArc()));
 			}
 		}
-        if(bool1){
-	        for (Element p : ville.graphe.neighbours_out(place)) {
-	            if (!marked.get(p)) {
-	                Dfs(ville, p);
-	                results.add(place);
-	                bool2=true;
-				}
-	        }
-	        if(!bool2)
-	        	results.add(place);
-        }
+	}
+	public void validateRoad(Ville ville, Arc route){
+		if(!ville.roadExists(ville.toRoad(route)))
+			throw new IllegalArgumentException( "la route "+route.toString()+" n'existe pas dans ");
+	}
+	private void Dfs(Ville ville, Arc route) {
+        validateRoad(ville, route);
+        marked.put(route, true);
+        results.add(ville.toRoad(route));
+	    for (Arc road : ville.neighbors_roads(route)) {
+	        if (!marked.get(road)) {
+	            Dfs(ville, road);
+	            results.add(ville.toRoad(road.antiArc()));
+	            }
+	    }
     }
-
-	public ArrayList<Element> results(){
+	public List<Road> results(){
 		return results;
 	}
-
 	@Override
 	public void setCity(Ville city) {
 		this.city = city;
 	}
-
 	@Override
-	public List<Element> algo(Element beginningPlace) {
-		marked = new HashMap<>();
-		for (Element p : city.getPlaces()) {
-			marked.put(p, false);
+	public List<Road> algo(Element beginningPlace) {
+		for (Road road : city.getRoads()) {
+			marked.put(city.toArc(road), false);
 		}
-		Dfs(city, beginningPlace);
+		for (Road road : city.getRoads()) {
+			if(road.getPlaceSrc().equals(city.findPlace(beginningPlace.toString()))){
+				Dfs(city,city.toArc(road));
+				results.add(city.toRoad(city.toArc(road).antiArc()));
+			}
+		}
 		return results;
 	}
-
 	@Override
-	public List<Element> algo(String place) {
+	public List<Road> algo(String place) {
 		Place beginningPlace = city.findPlace(place);
 		if (beginningPlace == null) {
 			System.err.println("Place " + place + " does not exist");
@@ -84,4 +64,5 @@ public class GogolS implements Algo {
 		}
 		return algo(beginningPlace);
 	}
+	
 }
