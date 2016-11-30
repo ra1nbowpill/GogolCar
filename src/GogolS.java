@@ -2,14 +2,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class GogolSS implements Algo{
+public class GogolS implements Algo{
 	HashMap<Arc, Boolean> marked=new HashMap<Arc, Boolean>();
 	List<Road> results=new ArrayList<>();
 	Ville city;
-	public GogolSS(){
+	public GogolS(){
 		
 	}
-	public GogolSS(Ville ville, String place){
+	public GogolS(Ville ville, String place){
 		for (Road road : ville.getRoads()) {
 			marked.put(ville.toArc(road), false);
 		}
