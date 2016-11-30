@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -173,6 +172,12 @@ public class Ville {
 		}
 		return roads;
 	}
+
+
+	public String toDot() {
+		return graphe.toDot();
+	}
+
 	public static String generate(int length)
 	{
 		    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // Tu supprimes les lettres dont tu ne veux pas

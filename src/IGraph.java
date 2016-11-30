@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public abstract class IGraph {
 	
@@ -54,6 +54,43 @@ public abstract class IGraph {
 		for (Element vertex : getVertices()) {
 			res += "[" + vertex + "] : " + delta_in(vertex) + "\n";
 		}
+		return res;
+	}
+	public String toDot() {
+		Map<Element, List<Element>> written = new HashMap<>();
+		String res = "graph g {\n";
+		for (Element vertex : getVertices()) {
+			for (Arc arc : delta_out(vertex)) {
+				if (written.get(arc.src()) == null) {
+					written.put(arc.src(), new ArrayList<>());
+				}
+				if (written.get(arc.dst()) == null) {
+					written.put(arc.dst(), new ArrayList<>());
+				}
+
+				if (written.get(arc.src()).contains(arc.dst())
+						|| written.get(arc.dst()).contains(arc.src())) {
+					continue;
+				}
+
+				written.get(arc.src()).add(arc.dst());
+				written.get(arc.dst()).add(arc.src());
+				res += arc.src() + " -- " + arc.dst() + ";\n";
+			}
+		}
+		res += "}";
+		return res;
+	}
+	public String toDot(boolean edges) {
+		if (!edges) return toDot();
+
+		String res = "graph g {\n";
+		for (Element vertex : getVertices()) {
+			for (Arc arc : delta_out(vertex)) {
+				res += arc.src() + " -- " + arc.dst() + ";\n";
+			}
+		}
+		res += "}";
 		return res;
 	}
 }
