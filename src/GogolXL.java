@@ -23,12 +23,14 @@ public class GogolXL {
 	G les arêtes du plus court chemin de u à v.
 
 	 */
-
-	private Set<Element> oddVertices(IGraph graph) {
+	public GogolXL(Ville ville){
+		
+	}
+	private Set<Element> oddVertices(Ville ville) {
 		Set<Element> oddVertices = new TreeSet<>();
-		for (Element vertex : graph.getVertices()) {
-			if (graph.neighbours_out(vertex).size() % 2 == 1) {
-				oddVertices.add(vertex);
+		for (Element place : ville.getPlaces()) {
+			if (ville.neighbors_out(place).size() % 2 == 1) {
+				oddVertices.add(place);
 			}
 		}
 		return oddVertices;
@@ -40,10 +42,10 @@ public class GogolXL {
 	 * @param graph the base graph
 	 * @return a graph
 	 */
-	public IGraph constructOddGraph(IGraph graph) {
+	public Ville constructOddGraph(Ville city) {
 		
-		IGraph oddGraph = new AdjacencyListGraph(Collections.emptySet());
-		Set<Element> oddVertices = oddVertices(graph);
+		Ville oddGraph = new Ville(city.name+"_bis");
+		Set<Element> oddVertices = oddVertices(city);
 		
 		for (Element oddVertex1 : oddVertices) {
 			for (Element oddVertex2 : oddVertices) {
@@ -51,31 +53,31 @@ public class GogolXL {
 					continue;
 				}
 				// TODO this must save the given arc
-				/*oddGraph.addArc(new WeighedArc(oddVertex1, oddVertex2, "",
-						Dijkstra.dijkstra(graph, oddVertex1, oddVertex2).size()));*/
+				Dijkstra a= new Dijkstra(city.graphe);
+				oddGraph.graphe.addArc(new Arc(oddVertex1, oddVertex2, "",
+						a.dijkstra(oddVertex1, oddVertex2).size()));
 			}
 		}
 		
 		return oddGraph;
 	}
 	
-	public Set<Arc> perfectMatch(IGraph graph) {
+	public Set<Arc> perfectMatch(Ville city) {
 		Set<Arc> match = new TreeSet<>();
-		List<WeighedArc> arcs = new ArrayList<>();
+		List<Arc> arcs = new ArrayList<>();
 		Set<Element> inMatch = new TreeSet<>();
 		
 		/* Getting all the arcs from the graph */
-		for (Element vertex : graph.getVertices()) {
-			// TODO	public List<Arc> IGraph::arcs_out(Integer vertex);
-			//arcs.addAll(graph.arcs_out(vertex));
+		for (Element vertex : city.getPlaces()) {
+			arcs.addAll(city.route_out(vertex));
 		}
 		
 		/* Sorting the arcs based on their weight */
 
-		arcs.sort((o1, o2) -> o1.weight() - o2.weight());
+		arcs.sort((o1, o2) -> o1.getWeight() - o2.getWeight());
 
 		/* Finding perfectMatch with euristic */
-		for (WeighedArc arc : arcs) {
+		for (Arc arc : arcs) {
 			if (inMatch.contains(arc.src()) || inMatch.contains(arc.dst())) {
 				continue;
 			}
@@ -84,7 +86,7 @@ public class GogolXL {
 			inMatch.add(arc.dst());
 		}
 		
-		if (!inMatch.containsAll(graph.getVertices())) {
+		if (!inMatch.containsAll(city.getPlaces())) {
 			System.err.println("The euristic is not good");
 			assert(false);
 		}
@@ -100,34 +102,35 @@ public class GogolXL {
 		return arcs;
 	}
 	
-	public IGraph makeGraphEulerian(IGraph graph, Set<Arc> match) {
+	public Ville makeGraphEulerian(Ville city, Set<Arc> match) {
 		
-		IGraph eulerGraph = new AdjacencyListGraph(graph);
-		Dijkstra dijkstra = new Dijkstra(graph);
+		Ville eulerGraph = new Ville(city.name+"_Eulrn");
+		Dijkstra dijkstra = new Dijkstra(city.graphe);
 
 		for (Arc matchArc : match) {
 			List<Arc> path = arcsOfPath(
 						dijkstra.dijkstra(matchArc.src(), matchArc.dst()) );
 			for (Arc arc : path) {
 				// TODO This must allow multiArcs
-				eulerGraph.addArc(arc);
+				eulerGraph.graphe.addArc(arc);
 			}
 			
 		}
 		
-		return null;
+		return eulerGraph;
 	}
 	
-	public List<Element> algo(IGraph graph, Element root) {
+	public List<Element> algo(Ville city, Element root) {
 		
-		IGraph oddGraph = constructOddGraph(graph);
+		Ville oddGraph = constructOddGraph(city);
 		
 		Set<Arc> match = perfectMatch(oddGraph);
 		
-		IGraph eulerianGraph = makeGraphEulerian(oddGraph, match);
+		Ville eulerianGraph = makeGraphEulerian(oddGraph, match);
 		
 		GogolL a = new GogolL();
-		return a.algo(eulerianGraph, root);
+		a.setCity(eulerianGraph);
+		return a.algo(root);
 		
 	}
 	
