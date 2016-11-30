@@ -46,8 +46,8 @@ public class TestAlgoBlackBox {
 
             List<Road> path = algo.algo(root);
 
-            /*if (!algoSuceeded(city.graphe, path) || path.get(0) != path.get(path.size() - 1))
-                printEndInfo(city.graphe, path, algo);*/
+            if (!algoSuceeded(city.graphe, path) || path.get(0) != path.get(path.size() - 1))
+                printEndInfo(city.graphe, path, algo);
 
             assert(algoSuceeded(city.graphe, path));
         }
@@ -72,6 +72,9 @@ public class TestAlgoBlackBox {
             city4 = Ville.createCity("cities/city4.txt");
     Ville cityOdd1 = Ville.createCity("cities/cityodd1.txt"),
             cityOdd2 = Ville.createCity("cities/cityodd2.txt");
+
+    Ville data1 = Ville.createCity("cities/Ville1.txt"),
+        data2 = Ville.createCity("cities/Ville2.txt");
 
     @Test
     public void testGraph1S() {
@@ -150,6 +153,32 @@ public class TestAlgoBlackBox {
     @Test
     public void testGraphOdd2XL() {
         testAlgoForEachVertex(cityOdd2, new GogolXL());
+    }
+
+    @Test
+    public void testGraphDATA1S() {
+        testAlgoForEachVertex(data1, new GogolS());
+    }
+    @Test
+    public void testGraphDATA1L() {
+        testAlgoForOddCity(data1, new GogolL());
+    }
+    @Test
+    public void testGraphDATA1XL() {
+        testAlgoForEachVertex(data1, new GogolXL());
+    }
+
+    @Test
+    public void testGraphDATA2S() {
+        testAlgoForEachVertex(data2, new GogolS());
+    }
+    @Test
+    public void testGraphDATA2L() {
+        testAlgoForOddCity(data2, new GogolL());
+    }
+    @Test
+    public void testGraphDATA2XL() {
+        testAlgoForEachVertex(data2, new GogolXL());
     }
 
 }
