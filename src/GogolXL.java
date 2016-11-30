@@ -105,7 +105,6 @@ public class GogolXL implements Algo {
 					break;
 				}
 			}
-
 			arcs.add(a);
 			//arcs.add(new Arc(path.get(i-1), path.get(i), ""));
 		}
@@ -133,7 +132,13 @@ public class GogolXL implements Algo {
 	}
 	
 	public List<Road> algo(Ville city, Element root) {
-		
+
+		if (oddVertices(city).isEmpty()) {
+			GogolL a = new GogolL();
+			a.setCity(city);
+			return a.algo(root);
+		}
+
 		Ville oddGraph = constructOddGraph(city);
 
 		Set<Arc> match = perfectMatch(oddGraph);
