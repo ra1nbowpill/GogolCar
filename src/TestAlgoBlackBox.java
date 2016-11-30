@@ -155,6 +155,7 @@ public class TestAlgoBlackBox {
         testAlgoForEachVertex(cityOdd2, new GogolXL());
     }
 
+    /* Sans cycle eulérien */
     @Test
     public void testGraphDATA1S() {
         testAlgoForEachVertex(data1, new GogolS());
@@ -168,13 +169,14 @@ public class TestAlgoBlackBox {
         testAlgoForEachVertex(data1, new GogolXL());
     }
 
+    /* Avec cycle eulérien */
     @Test
     public void testGraphDATA2S() {
         testAlgoForEachVertex(data2, new GogolS());
     }
     @Test
     public void testGraphDATA2L() {
-        testAlgoForOddCity(data2, new GogolL());
+        testAlgoForEachVertex(data2, new GogolL());
     }
     @Test
     public void testGraphDATA2XL() {
