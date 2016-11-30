@@ -117,11 +117,13 @@ public class GogolXL implements Algo {
 
 		IGraph graph = new AdjacencyListGraphMulti(city.graphe);
 
+		System.out.println("Ajout des arcs : ");
 		for (Arc matchArc : match) {
 			List<Arc> path = arcsOfPath(
 						dijkstra.dijkstra(matchArc.src(), matchArc.dst()) );
-
+			System.out.println("Pour (" + matchArc.src() + "," + matchArc.dst() + ") :");
 			for (Arc arc : path) {
+				System.out.print(arc.label() + " : " + arc.src() + " -> " + arc.dst() + "\n");
 				graph.addArc(arc);
 				graph.addArc(arc.antiArc());
 			}
@@ -131,12 +133,6 @@ public class GogolXL implements Algo {
 	}
 	
 	public List<Road> algo(Ville city, Element root) {
-
-		/*if (oddVertices(city).isEmpty()) {
-			GogolL a = new GogolL();
-			a.setCity(city);
-			return a.algo(root);
-		}*/
 
 		Ville oddGraph = constructOddGraph(city);
 
