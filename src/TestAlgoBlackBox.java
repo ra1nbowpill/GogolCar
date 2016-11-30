@@ -18,11 +18,11 @@ public class TestAlgoBlackBox {
         return res;
     }
 
-    public boolean algoSuceeded(IGraph graph, List<Element> path) {
+    public boolean algoSuceeded(IGraph graph, List<Road> path) {
 
         List<Arc> pathhsss = new ArrayList<>();
-        for (int i = 1; i < path.size(); i++) {
-            Arc a = new Arc(path.get(i-1), path.get(i));
+        for (int i = 0; i < path.size(); i++) {
+            Arc a = new Arc(path.get(i).getPlaceSrc(), path.get(i).getPlaceDst(), path.get(i).getName());
             pathhsss.add(a);
             pathhsss.add(a.antiArc());
         }
@@ -32,7 +32,7 @@ public class TestAlgoBlackBox {
         return arcs.isEmpty();
     }
 
-    private void printEndInfo(IGraph graph, List<Element> path, Algo algo) {
+    private void printEndInfo(IGraph graph, List<Road> path, Algo algo) {
 
         System.out.println("Success? : " + algoSuceeded(graph, path));
         System.out.println("Path : " + path);
@@ -43,7 +43,7 @@ public class TestAlgoBlackBox {
 
         for (Element root : city.getPlaces()) {
 
-            List<Element> path = algo.algo(root);
+            List<Road> path = algo.algo(root);
 
             if (!algoSuceeded(city.graphe, path) || path.get(0) != path.get(path.size() - 1))
                 printEndInfo(city.graphe, path, algo);
@@ -58,7 +58,7 @@ public class TestAlgoBlackBox {
 
         for (Element root : city.getPlaces()) {
 
-            List<Element> path = algo.algo(root);
+            List<Road> path = algo.algo(root);
 
             if (path != null)
                 printEndInfo(city.graphe, path, algo);

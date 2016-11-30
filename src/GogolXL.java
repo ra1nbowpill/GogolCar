@@ -22,10 +22,6 @@ public class GogolXL implements Algo {
 	private Ville city;
 	private IGraph graph;
 
-	public GogolXL(Ville ville){
-
-	}
-
 	public GogolXL() {}
 
 	private Set<Element> oddVertices(Ville ville) {
@@ -58,7 +54,6 @@ public class GogolXL implements Algo {
 				if (oddVertex1 == oddVertex2) {
 					continue;
 				}
-				// TODO this must save the given arc
 				Dijkstra a= new Dijkstra(city.graphe);
 
 				List<Element> shortest = a.dijkstra(oddVertex1, oddVertex2);
@@ -72,7 +67,7 @@ public class GogolXL implements Algo {
 	
 	public Set<Arc> perfectMatch(Ville city) {
 		Set<Arc> match = new TreeSet<>();
-		List<Arc> arcs = new ArrayList<>();
+		List<Arc> arcs;
 		Set<Element> inMatch = new TreeSet<>();
 		
 		/* Getting all the arcs from the graph */
@@ -118,7 +113,7 @@ public class GogolXL implements Algo {
 		for (Arc matchArc : match) {
 			List<Arc> path = arcsOfPath(
 						dijkstra.dijkstra(matchArc.src(), matchArc.dst()) );
-			System.out.println("Path in orig graph fromto " + path);
+
 			for (Arc arc : path) {
 				graph.addArc(arc);
 				graph.addArc(arc.antiArc());
@@ -128,20 +123,16 @@ public class GogolXL implements Algo {
 		return eulerGraph;
 	}
 	
-	public List<Element> algo(Ville city, Element root) {
+	public List<Road> algo(Ville city, Element root) {
 		
 		Ville oddGraph = constructOddGraph(city);
 
-		System.out.println("OddVertices : " + oddVertices(city));
-		System.out.println("OddGraph : " + oddGraph.graphe);
-
 		Set<Arc> match = perfectMatch(oddGraph);
-
-		System.out.println("MatchInOddGraph : " + match);
 
 		Ville eulerianGraph = makeGraphEulerian(city, match);
 
-		System.out.println("EulerianGraph : " + eulerianGraph.graphe);
+
+		assert(oddVertices(eulerianGraph.graphe).isEmpty());
 
 		GogolL a = new GogolL();
 		a.setCity(eulerianGraph);
@@ -157,12 +148,12 @@ public class GogolXL implements Algo {
 	}
 
 	@Override
-	public List<Element> algo(Element beginningPlace) {
+	public List<Road> algo(Element beginningPlace) {
 		return algo(this.city, beginningPlace);
 	}
 
 	@Override
-	public List<Element> algo(String place) {
+	public List<Road> algo(String place) {
 		Place beginningPlace = city.findPlace(place);
 		if (beginningPlace == null) {
 			System.err.println("Place " + place + " does not exist");
