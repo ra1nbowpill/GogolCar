@@ -156,8 +156,6 @@ public class GogolL implements Algo {
 		Set<Arc> antiArbo = getAntiTree(root);
 		Map<Element, Queue<Arc>> arcsOrder = numberize(antiArbo);
 
-		System.out.println(arcsOrder);
-
 		traversal(root, arcsOrder);
 		return path;
 	}
