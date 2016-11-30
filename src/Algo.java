@@ -11,8 +11,8 @@ public interface Algo {
 	*
 	* */
 
-	public void setCity(Ville city);
-	public List<Element> algo(Element beginningPlace);
-	public List<Element> algo(String strBeginningPlace);
+	void setCity(Ville city);
+	List<Road> algo(Element beginningPlace);
+	List<Road> algo(String strBeginningPlace);
 
 }
