@@ -29,6 +29,9 @@ public class TestAlgoBlackBox {
 
         List<Arc> arcs = getArcs(graph);
         arcs.removeAll(pathhsss);
+
+        System.out.println(arcs);
+
         return arcs.isEmpty();
     }
 

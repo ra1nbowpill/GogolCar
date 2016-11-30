@@ -47,17 +47,13 @@ public class GogolL implements Algo {
 				mediumNumber = new ArrayList<>(),
 				lowNumber = new ArrayList<>();
 
-		if (DEBUG) System.out.println("\tGetting order of " + vertex);
-
 		for (Arc neighbour : graph.delta_out(vertex)) {
 			boolean added = false;
-			if (DEBUG) System.out.print("Getting order of " + neighbour + " : ");
 			for (Arc antiArc : antiArbo) {
 				if (added) break;
 				if (antiArc.equals(neighbour)) {
 					bigNumber.add(neighbour);
 					added = true;
-					if (DEBUG) System.out.print("BIG Number");
 				}
 			}
 			for (Arc antiArc : antiArbo) {
@@ -65,7 +61,6 @@ public class GogolL implements Algo {
 				if (antiArc.equals(neighbour.antiArc())) {
 					mediumNumber.add(neighbour);
 					added = true;
-					if (DEBUG) System.out.print("MEDIUM Number");
 				}
 			}
 			for (Arc antiArc : antiArbo) {
@@ -73,12 +68,9 @@ public class GogolL implements Algo {
 				if (!antiArc.equals(neighbour.antiArc()) || !antiArc.equals(neighbour)) {
 					lowNumber.add(neighbour);
 					added = true;
-					if (DEBUG) System.out.print("LOW Number");
 				}
 			}
-			if (DEBUG) System.out.println(" Done");
 		}
-		if (DEBUG) System.out.println(bigNumber + " " + mediumNumber + " " + lowNumber);
 		order.addAll(lowNumber);
 		order.addAll(mediumNumber);
 		order.addAll(bigNumber);
