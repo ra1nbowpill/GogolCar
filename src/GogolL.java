@@ -15,7 +15,7 @@ public class GogolL implements Algo {
 
 	public boolean DEBUG = false;
 
-	private List<Element> path;
+	private List<Road> path;
 	private Set<Element> visited;
 	/**
 	 * Compute antiTree from graph
@@ -110,22 +110,27 @@ public class GogolL implements Algo {
 
 		Element current = root;
 
-		path.add(current);
 		while (arcsOrder.get(current) != null && !arcsOrder.get(current).isEmpty()) {
 			Arc a = arcsOrder.get(current).poll();
 
 			/* Suppression de a.antiArc dans les arcs a parcourir */
 			Queue<Arc> bbb = new LinkedList<>();
+			boolean didRemove = false;
 			for (Arc i : arcsOrder.get(a.dst())) {
 				if (i.src() == a.dst() && i.dst() == a.src()) {
+					if (didRemove) {
+						bbb.add(i);
+					}
+					didRemove = true;
 				} else {
 					bbb.add(i);
+
 				}
 			}
 			arcsOrder.put(a.dst(), bbb);
 
 			current = a.dst();
-			path.add(current);
+			path.add(new Road(a.label(), (Place) a.src(), (Place) a.dst()));
 
 		}
 	}
@@ -147,7 +152,7 @@ public class GogolL implements Algo {
 	}
 
 	@Override
-	public List<Element> algo(Element root) {
+	public List<Road> algo(Element root) {
 
 		if (oddVertices().size() != 0) {
 			System.out.println("This city is not eulerian");
@@ -160,12 +165,14 @@ public class GogolL implements Algo {
 		Set<Arc> antiArbo = getAntiTree(root);
 		Map<Element, Queue<Arc>> arcsOrder = numberize(antiArbo);
 
+		System.out.println(arcsOrder);
+
 		traversal(root, arcsOrder);
 		return path;
 	}
 
 	@Override
-	public List<Element> algo(String place) {
+	public List<Road> algo(String place) {
 		Place beginningPlace = city.findPlace(place);
 		if (beginningPlace == null) {
 			System.err.println("Place " + place + " does not exist");

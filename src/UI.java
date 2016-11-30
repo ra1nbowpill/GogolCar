@@ -149,7 +149,7 @@ public class UI {
         return outputFile;
     }
 
-    private static boolean writeResultOnOutputFile(File outputFile, List<Element> result) {
+    private static boolean writeResultOnOutputFile(File outputFile, List<Road> result) {
         try {
             Writer writer = new FileWriter(outputFile);
             writer.write(result.toString());
@@ -242,7 +242,7 @@ public class UI {
 
         init();
 
-        List<Element> result;
+        List<Road> result;
 
         /* Greeting message */
         System.out.println(" *** Bienvenue chez GogolCar *** ");
