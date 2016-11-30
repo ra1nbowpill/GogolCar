@@ -106,7 +106,6 @@ public class GogolXL implements Algo {
 				}
 			}
 			arcs.add(a);
-			//arcs.add(new Arc(path.get(i-1), path.get(i), ""));
 		}
 		return arcs;
 	}
