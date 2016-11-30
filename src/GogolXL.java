@@ -1,9 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class GogolXL implements Algo {
 	/*
@@ -34,9 +29,13 @@ public class GogolXL implements Algo {
 	public GogolXL() {}
 
 	private Set<Element> oddVertices(Ville ville) {
+		return oddVertices(ville.graphe);
+	}
+
+	private Set<Element> oddVertices(IGraph graph) {
 		Set<Element> oddVertices = new TreeSet<>();
-		for (Element place : ville.getPlaces()) {
-			if (ville.neighbors_out(place).size() % 2 == 1) {
+		for (Element place : graph.getVertices()) {
+			if (graph.delta_out(place).size() % 2 == 1) {
 				oddVertices.add(place);
 			}
 		}
@@ -61,8 +60,10 @@ public class GogolXL implements Algo {
 				}
 				// TODO this must save the given arc
 				Dijkstra a= new Dijkstra(city.graphe);
-				oddGraph.graphe.addArc(new Arc(oddVertex1, oddVertex2, "",
-						a.dijkstra(oddVertex1, oddVertex2).size()));
+
+				List<Element> shortest = a.dijkstra(oddVertex1, oddVertex2);
+				Arc arc = new Arc(oddVertex1, oddVertex2, Ville.generate(10), shortest.size());
+				oddGraph.graphe.addArc(arc);
 			}
 		}
 		
@@ -75,13 +76,11 @@ public class GogolXL implements Algo {
 		Set<Element> inMatch = new TreeSet<>();
 		
 		/* Getting all the arcs from the graph */
-		for (Element vertex : city.getPlaces()) {
-			arcs.addAll(city.route_out(vertex));
-		}
+		arcs = city.graphe.arcs;
 		
 		/* Sorting the arcs based on their weight */
 
-		arcs.sort((o1, o2) -> o1.getWeight() - o2.getWeight());
+		arcs.sort(Comparator.comparingInt(Arc::getWeight));
 
 		/* Finding perfectMatch with euristic */
 		for (Arc arc : arcs) {
@@ -114,27 +113,36 @@ public class GogolXL implements Algo {
 		Ville eulerGraph = new Ville(city.name+"_Eulrn");
 		Dijkstra dijkstra = new Dijkstra(city.graphe);
 
+		IGraph graph = new AdjacencyListGraphMulti(city.graphe);
+
 		for (Arc matchArc : match) {
 			List<Arc> path = arcsOfPath(
 						dijkstra.dijkstra(matchArc.src(), matchArc.dst()) );
+			System.out.println("Path in orig graph fromto " + path);
 			for (Arc arc : path) {
-				// TODO This must allow multiArcs
-				eulerGraph.graphe.addArc(arc);
+				graph.addArc(arc);
+				graph.addArc(arc.antiArc());
 			}
-			
 		}
-		
+		eulerGraph.graphe = graph;
 		return eulerGraph;
 	}
 	
 	public List<Element> algo(Ville city, Element root) {
 		
 		Ville oddGraph = constructOddGraph(city);
-		
+
+		System.out.println("OddVertices : " + oddVertices(city));
+		System.out.println("OddGraph : " + oddGraph.graphe);
+
 		Set<Arc> match = perfectMatch(oddGraph);
-		
-		Ville eulerianGraph = makeGraphEulerian(oddGraph, match);
-		
+
+		System.out.println("MatchInOddGraph : " + match);
+
+		Ville eulerianGraph = makeGraphEulerian(city, match);
+
+		System.out.println("EulerianGraph : " + eulerianGraph.graphe);
+
 		GogolL a = new GogolL();
 		a.setCity(eulerianGraph);
 		return a.algo(root);
