@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class GogolXL {
+public class GogolXL implements Algo {
 	/*
 	Dans le cas général, il y a toujours un nombre pair de sommets de degré impair.
 	La solution optimale peut être obtenue par l'algorithme suivant :
@@ -23,9 +23,16 @@ public class GogolXL {
 	G les arêtes du plus court chemin de u à v.
 
 	 */
+
+	private Ville city;
+	private IGraph graph;
+
 	public GogolXL(Ville ville){
-		
+
 	}
+
+	public GogolXL() {}
+
 	private Set<Element> oddVertices(Ville ville) {
 		Set<Element> oddVertices = new TreeSet<>();
 		for (Element place : ville.getPlaces()) {
@@ -39,7 +46,7 @@ public class GogolXL {
 	/**
 	 * Computes G' the complete graph containing the odd degree vertices of G
 	 * the weigh is the shortest path from x to y in G
-	 * @param graph the base graph
+	 * @param city the base graph
 	 * @return a graph
 	 */
 	public Ville constructOddGraph(Ville city) {
@@ -133,5 +140,26 @@ public class GogolXL {
 		return a.algo(root);
 		
 	}
-	
+
+
+	@Override
+	public void setCity(Ville city) {
+		this.city = city;
+		this.graph = city.graphe;
+	}
+
+	@Override
+	public List<Element> algo(Element beginningPlace) {
+		return algo(this.city, beginningPlace);
+	}
+
+	@Override
+	public List<Element> algo(String place) {
+		Place beginningPlace = city.findPlace(place);
+		if (beginningPlace == null) {
+			System.err.println("Place " + place + " does not exist");
+			return null;
+		}
+		return algo(beginningPlace);
+	}
 }
