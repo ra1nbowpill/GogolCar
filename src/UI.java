@@ -93,14 +93,14 @@ public class UI {
         Element plaza;
 
         System.out.println(message);
-        String strPlaza = scanner.next();
+        String strPlaza = scanner.nextLine();
         plaza = startingPlaza(city, strPlaza);
 
         while (plaza == null) {
             System.out.println("La place " + strPlaza + " n'existe pas");
 
             System.out.println(message);
-            strPlaza = scanner.next();
+            strPlaza = scanner.nextLine();
             plaza = startingPlaza(city, strPlaza);
         }
 
